@@ -38,6 +38,7 @@ Run all commands from the repository root and keep `yarn.lock` as the single sou
 - Never rely on `--runInBand`; tests must pass under Jest's normal parallel execution so suites remain isolated.
 - Follow React Testing Library philosophy: prefer user-facing queries (role, label, text), avoid implementation details, and keep each test focused on a single behavioural assertion.
 - Keep tests single-purpose whenever possible—prefer one key expectation per test so failures point to a single root cause.
+- Structure test names and bodies using a `Given / When / Then` mindset, e.g. `should render add box control when the app mounts then the button is visible`, and mirror that flow with inline comments.
 - Apply a strict red → green → refactor loop:
   - New features: write a failing test that captures the desired behaviour, implement the smallest change to pass it, then iterate.
   - Bug fixes: reproduce the defect with a failing test before touching production code, then make it pass.
@@ -64,3 +65,13 @@ Run all commands from the repository root and keep `yarn.lock` as the single sou
 
 - Update `README.md` whenever behaviour changes or new setup steps matter to users or reviewers; keep additions concise and empathetic.
 - Keep `AGENTS.md` current—if your workflow evolves (new scripts, linters, deployment steps), amend this guide as part of the change.
+
+## Architecture & Design Principles
+
+- **Ports & Adapters (Hexagonal)**: treat React components as adapters. They consume inputs (DTOs/view models) and emit events, while domain logic sits behind ports (stores/services/hooks) that hide implementation details.
+- **Clean Architecture**: keep domain rules independent of frameworks. Flow of dependencies always points from UI → application services → domain models → infrastructure.
+- **Dependency Inversion / IoC**: inject domain capabilities through props, context providers, or custom hooks rather than importing implementations. Accept interfaces (ports) and wire concrete adapters at the edge.
+- **Separation of Concerns**: presentation components render data; business logic lives in stores/services. Use mapper functions or DTOs to translate between the two so the UI remains domain-agnostic.
+- **Business vs Representation**: components should never manipulate MST models or repositories directly; they should receive immutable data structures and callbacks that operate on domain services.
+- **Refactoring mindset**: refactor opportunistically—whenever tests are green and the design can improve, restructure without altering behaviour. Prioritise clarity, intent-revealing names, and small, composable functions.
+- **Readable code first**: choose descriptive identifiers, keep modules short, and ensure each unit honours single responsibility / separation of concerns.

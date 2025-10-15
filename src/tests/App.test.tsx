@@ -14,32 +14,37 @@ afterEach(() => {
 const renderApp = () => render(<App />);
 
 describe("App", () => {
-  it("renders the add-box control", () => {
+  it("should render add box control when the app mounts then the button is visible", () => {
     renderApp();
+
     expect(screen.getByRole("button", { name: /add box/i })).toBeInTheDocument();
   });
 
-  it("renders the remove-box control", () => {
+  it("should render remove box control when the app mounts then the button is visible", () => {
     renderApp();
+
     expect(screen.getByRole("button", { name: /remove box/i })).toBeInTheDocument();
   });
 
-  it("renders the color picker with an accessible name", () => {
+  it("should expose a named color picker when the toolbar renders then the input is accessible", () => {
     renderApp();
+
     expect(screen.getByLabelText(/box color/i)).toBeInTheDocument();
   });
 
-  it("displays the selection summary", () => {
+  it("should show selection summary when nothing is selected then the default message is present", () => {
     renderApp();
+
     expect(screen.getByText(/no boxes selected/i)).toBeInTheDocument();
   });
 
-  it("renders the initial box on the canvas", () => {
+  it("should list one box when the store is seeded then the canvas shows exactly one entry", () => {
     renderApp();
+
     expect(screen.getAllByText(/^box$/i)).toHaveLength(1);
   });
 
-  it("reflects new boxes added to the store", async () => {
+  it("should reflect new boxes when the store adds one then the canvas renders the additional box", async () => {
     renderApp();
 
     act(() => {
