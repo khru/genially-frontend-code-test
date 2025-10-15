@@ -1,25 +1,6 @@
 import { Instance, types } from "mobx-state-tree";
-import { v4 as uuid } from "uuid";
 import BoxModel from "./models/Box";
-import getRandomColor from "../utils/getRandomColor";
-
-type Position = {
-  left: number;
-  top: number;
-};
-
-const DEFAULT_POSITION: Position = {
-  left: 0,
-  top: 0,
-};
-
-const createBoxAtPosition = (position: Position) =>
-  BoxModel.create({
-    id: uuid(),
-    color: getRandomColor(),
-    left: position.left,
-    top: position.top,
-  });
+import { defaultBoxService, DEFAULT_POSITION, Position } from "../application/BoxService";
 
 const MainStore = types
   .model("MainStore", {
@@ -30,10 +11,12 @@ const MainStore = types
       self.boxes.push(box);
     },
     addBoxAtPosition(position: Position) {
-      self.boxes.push(createBoxAtPosition(position));
+      const dto = defaultBoxService.createBoxAtPosition(position);
+      self.boxes.push(BoxModel.create(dto));
     },
     addBoxAtDefaultPosition() {
-      self.boxes.push(createBoxAtPosition({ ...DEFAULT_POSITION }));
+      const dto = defaultBoxService.createDefaultBox();
+      self.boxes.push(BoxModel.create(dto));
     },
   }))
   .views(() => ({}));

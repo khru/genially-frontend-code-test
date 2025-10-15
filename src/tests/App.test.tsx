@@ -3,7 +3,8 @@ import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { v4 as uuid } from "uuid";
 import App from "../components/App";
-import store, { DEFAULT_POSITION } from "../stores/MainStore";
+import store from "../stores/MainStore";
+import { DEFAULT_POSITION } from "../application/BoxService";
 import BoxModel from "../stores/models/Box";
 
 const BASE_SNAPSHOT = getSnapshot(store);
