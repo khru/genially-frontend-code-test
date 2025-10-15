@@ -15,7 +15,6 @@ const MainStore = types
   .views(self => ({}));
 
 type MainStoreInstance = Instance<typeof MainStore>;
-type BoxInstance = Instance<typeof BoxModel>;
 
 const store: MainStoreInstance = MainStore.create();
 
