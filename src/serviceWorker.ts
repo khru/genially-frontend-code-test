@@ -40,7 +40,7 @@ export function register(config?: Config): void {
       if (isLocalhost) {
         checkValidServiceWorker(swUrl, config);
 
-        navigator.serviceWorker.ready.then(() => {
+        void navigator.serviceWorker.ready.then(() => {
           console.log(
             "This web app is being served cache-first by a service worker. To learn more, visit https://bit.ly/CRA-PWA",
           );
@@ -97,9 +97,9 @@ function checkValidServiceWorker(swUrl: string, config?: Config): void {
       const contentType = response.headers.get("content-type");
 
       if (response.status === 404 || (contentType != null && contentType.indexOf("javascript") === -1)) {
-        navigator.serviceWorker.ready
+        void navigator.serviceWorker.ready
           .then((registration) => {
-            registration.unregister().then(() => {
+            void registration.unregister().then(() => {
               window.location.reload();
             });
           })
@@ -117,9 +117,9 @@ function checkValidServiceWorker(swUrl: string, config?: Config): void {
 
 export function unregister(): void {
   if ("serviceWorker" in navigator) {
-    navigator.serviceWorker.ready
+    void navigator.serviceWorker.ready
       .then((registration) => {
-        registration.unregister();
+        void registration.unregister();
       })
       .catch(() => {
         /* no-op */

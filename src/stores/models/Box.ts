@@ -9,7 +9,7 @@ const BoxModel = types
     left: types.optional(types.number, 200),
     top: types.optional(types.number, 100),
   })
-  .views((self) => ({}))
-  .actions((self) => ({}));
+  .views(() => ({}))
+  .actions(() => ({}));
 
 export default BoxModel;

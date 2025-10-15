@@ -13,6 +13,6 @@ const AppView: React.FC = () => {
   );
 };
 
-const ObservedApp = observer(AppView);
+const App: React.FC = observer(AppView);
 
-export default ObservedApp as React.FC;
+export default App;

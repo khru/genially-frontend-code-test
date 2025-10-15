@@ -12,7 +12,7 @@ const MainStore = types
       self.boxes.push(box);
     },
   }))
-  .views((self) => ({}));
+  .views(() => ({}));
 
 type MainStoreInstance = Instance<typeof MainStore>;
 
