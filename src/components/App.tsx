@@ -9,9 +9,26 @@ const AppView: React.FC = () => {
     store.addBoxAtDefaultPosition();
   }, []);
 
+  const handleColorChange = React.useCallback((color: string) => {
+    store.updateSelectedBoxesColor(color);
+  }, []);
+
+  const selectionCount = store.selectedBoxIds.length;
+  const hasSelection = selectionCount > 0;
+  const selectionLabel = hasSelection
+    ? `${selectionCount} box${selectionCount > 1 ? "es" : ""} selected`
+    : "No boxes selected";
+  const selectedColor = store.lastSelectedBox?.color ?? "#000000";
+
   return (
     <div className="app">
-      <Toolbar onAddBox={handleAddBox} />
+      <Toolbar
+        onAddBox={handleAddBox}
+        colorValue={selectedColor}
+        onChangeColor={handleColorChange}
+        isColorPickerDisabled={!hasSelection}
+        selectionLabel={selectionLabel}
+      />
       <Canvas store={store} />
     </div>
   );

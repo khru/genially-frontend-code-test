@@ -30,10 +30,28 @@ const MainStore = types
       selectionService.clear();
       self.selectedBoxIds.replace(selectionService.getSelection());
     },
+    updateSelectedBoxesColor(color: string) {
+      self.selectedBoxIds.forEach((id) => {
+        const targetBox = self.boxes.find((box) => box.id === id);
+        if (targetBox) {
+          targetBox.setColor(color);
+        }
+      });
+    },
   }))
   .views((self) => ({
     isBoxSelected(id: string) {
       return self.selectedBoxIds.includes(id);
+    },
+    get selectedBoxes() {
+      return self.boxes.filter((box) => self.selectedBoxIds.includes(box.id));
+    },
+    get lastSelectedBox() {
+      const lastSelectedId = self.selectedBoxIds[self.selectedBoxIds.length - 1];
+      if (!lastSelectedId) {
+        return undefined;
+      }
+      return self.boxes.find((box) => box.id === lastSelectedId);
     },
   }));
 

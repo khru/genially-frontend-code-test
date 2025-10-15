@@ -1,5 +1,5 @@
 import { applySnapshot, getSnapshot } from "mobx-state-tree";
-import { act, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { v4 as uuid } from "uuid";
 import App from "../../components/App";
@@ -84,5 +84,46 @@ describe("App", () => {
     await user.click(screen.getByTestId("canvas"));
 
     expect(boxElement).toHaveAttribute("aria-pressed", "false");
+  });
+
+  it("should update the selected box color when the user picks a new color then the box reflects the change", async () => {
+    const user = userEvent.setup();
+    const colorInput: HTMLInputElement = screen.getByLabelText(/box color/i);
+    const boxElement = screen.getAllByRole("button", { name: /^box$/i })[0];
+
+    await user.click(boxElement);
+
+    // Use fireEvent because <input type="color"> lacks full userEvent support.
+    fireEvent.input(colorInput, { target: { value: "#ff00ff" } });
+
+    expect(colorInput.value).toBe("#ff00ff");
+    expect(boxElement).toHaveStyle({ backgroundColor: "#ff00ff" });
+    expect(store.boxes[0].color).toBe("#ff00ff");
+  });
+
+  it("should update the color control when the user selects another box then the picker mirrors that box color", async () => {
+    const user = userEvent.setup();
+    const colorInput: HTMLInputElement = screen.getByLabelText(/box color/i);
+    const secondBoxColor = "#123456";
+
+    act(() => {
+      store.addBox(
+        BoxModel.create({
+          id: uuid(),
+          color: secondBoxColor,
+          left: 50,
+          top: 60,
+        }),
+      );
+    });
+
+    const boxElements = screen.getAllByRole("button", { name: /^box$/i });
+
+    await user.click(boxElements[0]);
+    fireEvent.input(colorInput, { target: { value: "#abcdef" } });
+    await user.click(boxElements[1]);
+
+    expect(colorInput.value).toBe(secondBoxColor);
+    expect(store.boxes[1].color).toBe(secondBoxColor);
   });
 });

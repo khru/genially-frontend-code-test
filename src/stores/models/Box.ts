@@ -10,6 +10,10 @@ const BoxModel = types
     top: types.optional(types.number, 100),
   })
   .views(() => ({}))
-  .actions(() => ({}));
+  .actions((self) => ({
+    setColor(color: string) {
+      self.color = color;
+    },
+  }));
 
 export default BoxModel;
