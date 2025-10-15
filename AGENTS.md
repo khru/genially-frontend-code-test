@@ -9,13 +9,14 @@
 
 ## Build, Test & Development Commands
 ```bash
-nvm use          # align with v16.17.1 from .nvmrc
-npm install      # install dependencies with the npm lockfile
-npm start        # run the dev server on http://localhost:3000
-npm test         # execute Jest + React Testing Library in watch mode
-npm run build    # create an optimized bundle in build/
+nvm use            # align with v16.17.1 from .nvmrc
+yarn install       # install dependencies using the yarn.lock constraints
+yarn start         # run the dev server on http://localhost:3000 (prompts for alternatives if busy)
+yarn test          # execute Jest + React Testing Library in watch mode
+yarn build         # create an optimized bundle in build/
+yarn typecheck     # run the TypeScript compiler in noEmit mode
 ```
-Run commands from the repository root and prefer npm to keep `package-lock.json` authoritative.
+Run all commands from the repository root and keep `yarn.lock` as the single source of dependency truth.
 
 ## Coding Style & Naming Conventions
 - Rely on the CRA ESLint configuration (`react-app`); warnings surface during `npm start` and `npm test`.
@@ -25,8 +26,8 @@ Run commands from the repository root and prefer npm to keep `package-lock.json`
 - Group styles under meaningful class prefixes in `src/main.css`; keep inline overrides minimal.
 
 ## Testing Guidelines
-- Jest and React Testing Library are pre-configured via `src/setupTests.js`; import from `@testing-library/react` by default.
-- Name specs `*.test.js` and place them under `src/tests` (or co-locate near the subject file when it aids readability).
+- Jest and React Testing Library are pre-configured via `src/setupTests.ts`; import from `@testing-library/react` by default.
+- Name specs `*.test.tsx` (or `*.test.ts` for utilities) and place them under `src/tests` (or co-locate near the subject file when it aids readability).
 - Emphasize behaviour-driven assertions (selection highlights, counters, drag handles) and add regression coverage when store logic changes; run `npm test -- --watchAll=false` for CI parity.
 
 ## Commit & Pull Request Guidelines
@@ -37,3 +38,6 @@ Run commands from the repository root and prefer npm to keep `package-lock.json`
 ## State Management Notes
 - `MainStore` seeds the editor with an initial box via `uuid` and colour helpers; extend it with MST actions for selection, persistence, or undo/redo.
 - Export additional models under `src/stores/models` and hydrate them from `MainStore` to keep `src/index.js` lean.
+
+## Definition of Done
+- Do not mark work complete until `yarn typecheck`, all configured linters (surfaced via CRA during `yarn start`/`yarn test`), and `yarn test --watchAll=false --runInBand` finish with no errors or warnings.

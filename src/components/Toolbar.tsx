@@ -1,6 +1,6 @@
 import React from "react";
 
-function Toolbar() {
+const Toolbar: React.FC = () => {
   return (
     <div className="toolbar">
       <button>Add Box</button>
@@ -9,6 +9,6 @@ function Toolbar() {
       <span>No boxes selected</span>
     </div>
   );
-}
+};
 
 export default Toolbar;

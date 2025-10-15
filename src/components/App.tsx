@@ -1,17 +1,18 @@
+import { observer } from "mobx-react";
 import React from "react";
-
 import store from "../stores/MainStore";
 import Canvas from "./Canvas";
 import Toolbar from "./Toolbar";
-import { observer } from "mobx-react";
 
-function App() {
+const AppView: React.FC = () => {
   return (
     <div className="app">
       <Toolbar />
       <Canvas store={store} />
     </div>
   );
-}
+};
 
-export default observer(App);
+const ObservedApp = observer(AppView);
+
+export default ObservedApp as React.FC;
