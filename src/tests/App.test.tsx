@@ -79,4 +79,31 @@ describe("App", () => {
     expect(latestBox.left).toBe(DEFAULT_POSITION.left);
     expect(latestBox.top).toBe(DEFAULT_POSITION.top);
   });
+
+  it("should decorate the box with selection when the user clicks the box then the selection state is true", async () => {
+    // Given
+    const user = userEvent.setup();
+    renderApp();
+    const boxElement = screen.getAllByRole("button", { name: /^box$/i })[0];
+
+    // When
+    await user.click(boxElement);
+
+    // Then
+    expect(boxElement).toHaveAttribute("aria-pressed", "true");
+  });
+
+  it("should clear the selection when the user clicks on the canvas then the box loses the selection class", async () => {
+    // Given
+    const user = userEvent.setup();
+    renderApp();
+    const boxElement = screen.getAllByRole("button", { name: /^box$/i })[0];
+    await user.click(boxElement);
+
+    // When
+    await user.click(screen.getByTestId("canvas"));
+
+    // Then
+    expect(boxElement).toHaveAttribute("aria-pressed", "false");
+  });
 });

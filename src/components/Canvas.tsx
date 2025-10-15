@@ -11,7 +11,7 @@ type CanvasProps = {
 
 const Canvas: React.FC<CanvasProps> = ({ store }) => {
   return (
-    <div className="canva">
+    <div className="canva" data-testid="canvas" onClick={() => store.clearSelection()} role="presentation">
       {store.boxes.map((box: BoxInstance) => (
         <Box
           id={box.id}
@@ -22,6 +22,8 @@ const Canvas: React.FC<CanvasProps> = ({ store }) => {
           width={box.width}
           height={box.height}
           box={box}
+          isSelected={store.isBoxSelected(box.id)}
+          onSelect={(id) => store.selectBox(id)}
         />
       ))}
     </div>

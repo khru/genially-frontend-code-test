@@ -32,6 +32,11 @@ html,
   align-items: center;
 }
 
+.box.box--selected {
+  outline: 3px solid #3a7afe;
+  outline-offset: 2px;
+}
+
 .toolbar {
   position: fixed;
   top: 0;
