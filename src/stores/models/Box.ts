@@ -1,4 +1,4 @@
-import { Instance, SnapshotIn, SnapshotOut, types } from "mobx-state-tree";
+import { types } from "mobx-state-tree";
 
 const BoxModel = types
   .model("Box", {
@@ -11,9 +11,5 @@ const BoxModel = types
   })
   .views(self => ({}))
   .actions(self => ({}));
-
-export type BoxSnapshotIn = SnapshotIn<typeof BoxModel>;
-export type BoxSnapshotOut = SnapshotOut<typeof BoxModel>;
-export type BoxInstance = Instance<typeof BoxModel>;
 
 export default BoxModel;

@@ -1,11 +1,12 @@
 import { observer } from "mobx-react";
 import React from "react";
 import Box from "./Box";
-import { MainStoreInstance } from "../stores/MainStore";
-import { BoxInstance } from "../stores/models/Box";
+
+type StoreInstance = typeof import("../stores/MainStore").default;
+type BoxInstance = StoreInstance["boxes"][number];
 
 type CanvasProps = {
-  store: MainStoreInstance;
+  store: StoreInstance;
 };
 
 const Canvas: React.FC<CanvasProps> = ({ store }) => {

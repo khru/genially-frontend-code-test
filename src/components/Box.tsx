@@ -1,7 +1,9 @@
 import { observer } from "mobx-react";
 import React from "react";
 import BoxDraggable, { BoxDraggableProps } from "./BoxDraggable";
-import { BoxInstance } from "../stores/models/Box";
+
+type StoreInstance = typeof import("../stores/MainStore").default;
+type BoxInstance = StoreInstance["boxes"][number];
 
 export type BoxProps = BoxDraggableProps & {
   box: BoxInstance;
