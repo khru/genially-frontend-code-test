@@ -7,10 +7,12 @@ type BoxInstance = StoreInstance["boxes"][number];
 
 export type BoxProps = BoxDraggableProps & {
   box: BoxInstance;
+  onSelect: (id: string) => void;
+  isSelected: boolean;
 };
 
-const Box: React.FC<BoxProps> = ({ box: _box, ...rest }) => (
-  <BoxDraggable {...rest}>
+const Box: React.FC<BoxProps> = ({ box: _box, onSelect, isSelected, ...rest }) => (
+  <BoxDraggable {...rest} onSelect={onSelect} isSelected={isSelected}>
     <div>Box</div>
   </BoxDraggable>
 );

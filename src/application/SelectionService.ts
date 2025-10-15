@@ -1,13 +1,28 @@
 class SelectionService {
-  select(id: string, current: string[]): string[] {
-    if (current.includes(id)) {
-      return current;
-    }
-    return [...current, id];
+  private selectedIds: Set<string>;
+
+  constructor(initialSelection: string[] = []) {
+    this.selectedIds = new Set(initialSelection);
   }
 
-  clear(_current: string[]): string[] {
-    return [];
+  select(id: string): void {
+    this.selectedIds.add(id);
+  }
+
+  clear(): void {
+    this.selectedIds.clear();
+  }
+
+  replace(ids: string[]): void {
+    this.selectedIds = new Set(ids);
+  }
+
+  getSelection(): string[] {
+    return Array.from(this.selectedIds);
+  }
+
+  isSelected(id: string): boolean {
+    return this.selectedIds.has(id);
   }
 }
 

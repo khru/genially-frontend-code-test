@@ -1,4 +1,4 @@
-import { Instance, types } from "mobx-state-tree";
+import { Instance, onSnapshot, types } from "mobx-state-tree";
 import BoxModel from "./models/Box";
 import { defaultBoxService, DEFAULT_POSITION, Position } from "../application/BoxService";
 import { SelectionService } from "../application/SelectionService";
@@ -23,12 +23,12 @@ const MainStore = types
       self.boxes.push(BoxModel.create(dto));
     },
     selectBox(id: string) {
-      const next = selectionService.select(id, self.selectedBoxIds.slice());
-      self.selectedBoxIds.replace(next);
+      selectionService.select(id);
+      self.selectedBoxIds.replace(selectionService.getSelection());
     },
     clearSelection() {
-      const next = selectionService.clear(self.selectedBoxIds.slice());
-      self.selectedBoxIds.replace(next);
+      selectionService.clear();
+      self.selectedBoxIds.replace(selectionService.getSelection());
     },
   }))
   .views((self) => ({
@@ -42,6 +42,11 @@ type MainStoreInstance = Instance<typeof MainStore>;
 const store: MainStoreInstance = MainStore.create({
   boxes: [],
   selectedBoxIds: [],
+});
+
+selectionService.replace(store.selectedBoxIds.slice());
+onSnapshot(store, (snapshot) => {
+  selectionService.replace(snapshot.selectedBoxIds.slice());
 });
 
 store.addBoxAtDefaultPosition();
