@@ -1,8 +1,9 @@
 import { applySnapshot, getSnapshot } from "mobx-state-tree";
 import { act, render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { v4 as uuid } from "uuid";
 import App from "../components/App";
-import store from "../stores/MainStore";
+import store, { DEFAULT_POSITION } from "../stores/MainStore";
 import BoxModel from "../stores/models/Box";
 
 const BASE_SNAPSHOT = getSnapshot(store);
@@ -60,5 +61,21 @@ describe("App", () => {
 
     const boxes = await screen.findAllByText(/^box$/i);
     expect(boxes).toHaveLength(2);
+  });
+
+  it("should show a second box when the user clicks add box then the canvas lists the new element", async () => {
+    // Given
+    const user = userEvent.setup();
+    renderApp();
+
+    // When
+    await user.click(screen.getByRole("button", { name: /add box/i }));
+
+    // Then
+    const boxes = await screen.findAllByText(/^box$/i);
+    expect(boxes).toHaveLength(2);
+    const latestBox = store.boxes[store.boxes.length - 1];
+    expect(latestBox.left).toBe(DEFAULT_POSITION.left);
+    expect(latestBox.top).toBe(DEFAULT_POSITION.top);
   });
 });

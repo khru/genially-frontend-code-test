@@ -5,9 +5,13 @@ import Canvas from "./Canvas";
 import Toolbar from "./Toolbar";
 
 const AppView: React.FC = () => {
+  const handleAddBox = React.useCallback(() => {
+    store.addBoxAtDefaultPosition();
+  }, []);
+
   return (
     <div className="app">
-      <Toolbar />
+      <Toolbar onAddBox={handleAddBox} />
       <Canvas store={store} />
     </div>
   );
