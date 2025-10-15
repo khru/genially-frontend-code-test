@@ -21,13 +21,16 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:ci": "react-scripts test --watchAll=false --coverage",
     "eject": "react-scripts eject",
     "typecheck": "tsc --noEmit",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
     "lint": "tsc --noEmit && eslint .",
     "lint:eslint": "eslint .",
-    "lint:staged": "lint-staged"
+    "lint:staged": "lint-staged",
+    "pre-commit:install": "cp ./scripts/pre-commit.sh ./.git/hooks/pre-commit && chmod +x ./.git/hooks/pre-commit",
+    "pre-commit:run": "./scripts/pre-commit.sh"
   },
   "devDependencies": {
     "@babel/core": "7.27.1",

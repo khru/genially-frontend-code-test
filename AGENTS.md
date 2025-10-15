@@ -34,7 +34,14 @@ Run all commands from the repository root and keep `yarn.lock` as the single sou
 
 - Jest and React Testing Library are pre-configured via `src/setupTests.ts`; import from `@testing-library/react` by default.
 - Name specs `*.test.tsx` (or `*.test.ts` for utilities) and place them under `src/tests` (or co-locate near the subject file when it aids readability).
-- Emphasize behaviour-driven assertions (selection highlights, counters, drag handles) and add regression coverage when store logic changes; run `yarn test --watchAll=false --runInBand` for CI parity.
+- Emphasize behaviour-driven assertions (selection highlights, counters, drag handles) and add regression coverage when store logic changes; run `yarn test --watchAll=false` (or `yarn test:ci`) for CI parity.
+- Never rely on `--runInBand`; tests must pass under Jest's normal parallel execution so suites remain isolated.
+- Follow React Testing Library philosophy: prefer user-facing queries (role, label, text), avoid implementation details, and keep each test focused on a single behavioural assertion.
+- Apply a strict red → green → refactor loop:
+  - New features: write a failing test that captures the desired behaviour, implement the smallest change to pass it, then iterate.
+  - Bug fixes: reproduce the defect with a failing test before touching production code, then make it pass.
+  - Legacy code changes: add coverage describing current expectations before refactoring the implementation.
+- Keep tests deterministic—no randomness, network calls, or unnecessary mocks; stub only what is essential and assert outcomes, not internal function calls, unless behaviour depends on them.
 
 ## Commit & Pull Request Guidelines
 
@@ -49,7 +56,8 @@ Run all commands from the repository root and keep `yarn.lock` as the single sou
 
 ## Definition of Done
 
-- Do not mark work complete until `yarn typecheck`, all configured linters (surfaced via CRA during `yarn start`/`yarn test`), and `yarn test --watchAll=false --runInBand` finish with no errors or warnings.
+- Do not mark work complete until `yarn typecheck`, `yarn lint`, `yarn test --watchAll=false`, and `yarn format --check .` finish with no errors or warnings.
+- Run `yarn lint:staged` (or ensure an equivalent pre-commit hook) before submitting changes so staged files comply with formatting and lint rules.
 
 ## Documentation & Knowledge Sharing
 

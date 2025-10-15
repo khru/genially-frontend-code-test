@@ -5,35 +5,30 @@ module.exports = {
     project: "./tsconfig.json",
     tsconfigRootDir: __dirname,
     ecmaVersion: 2021,
-    sourceType: "module"
+    sourceType: "module",
   },
   env: {
     browser: true,
     es2021: true,
     node: true,
-    jest: true
+    jest: true,
   },
   settings: {
     react: {
-      version: "detect"
-    }
+      version: "detect",
+    },
   },
-  plugins: [
-    "@typescript-eslint",
-    "react",
-    "react-hooks",
-    "testing-library"
-  ],
+  plugins: ["@typescript-eslint", "react", "react-hooks", "testing-library"],
   extends: [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "plugin:react/recommended",
-    "plugin:react-hooks/recommended"
+    "plugin:react-hooks/recommended",
   ],
   rules: {
-    "semi": ["error", "always"],
-    "quotes": ["error", "double", { avoidEscape: true }],
+    semi: ["error", "always"],
+    quotes: ["error", "double", { avoidEscape: true }],
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/no-inferrable-types": ["warn", { ignoreParameters: true }],
@@ -41,13 +36,13 @@ module.exports = {
     "@typescript-eslint/no-empty-function": "off",
     "react/react-in-jsx-scope": "off",
     "react/prop-types": "off",
-    "react/jsx-uses-react": "off"
+    "react/jsx-uses-react": "off",
   },
   overrides: [
     {
       files: ["src/tests/**/*.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}"],
-      extends: ["plugin:testing-library/react"]
-    }
+      extends: ["plugin:testing-library/react"],
+    },
   ],
   ignorePatterns: [
     "node_modules/",
@@ -56,6 +51,6 @@ module.exports = {
     "coverage/",
     "public/",
     "src/react-app-env.d.ts",
-    "prettier.config.js"
-  ]
+    "prettier.config.js",
+  ],
 };

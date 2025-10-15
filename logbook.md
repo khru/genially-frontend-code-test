@@ -20,6 +20,13 @@ A concise record of changes made to modernize and standardize the codebase. The 
 
 - Upgraded the project to **Node.js 22**.
 - Updated all dependencies to the latest compatible versions and refreshed the lockfile.
+- Added Prettier, ESLint (with React/Testing Library plugins), and lint-staged to automate formatting, linting, and staged-file checks.
+
+## 🧪 Testing Improvements
+
+- Introduced React Testing Library coverage for `App`, focusing on user-visible behaviour of the toolbar and canvas updates.
+- Reset MobX-State-Tree snapshots between tests to keep suites deterministic and isolated.
+- Documented a TDD-first testing approach in `AGENTS.md` so future changes start with failing tests.
 
 ## ✅ Outcome
 
