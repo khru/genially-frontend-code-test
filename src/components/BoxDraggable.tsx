@@ -11,15 +11,7 @@ export type BoxDraggableProps = {
   children?: React.ReactNode;
 };
 
-const BoxDraggable: React.FC<BoxDraggableProps> = ({
-  id,
-  color,
-  width,
-  height,
-  left,
-  top,
-  children
-}) => {
+const BoxDraggable: React.FC<BoxDraggableProps> = ({ id, color, width, height, left, top, children }) => {
   return (
     <div
       id={id}
@@ -28,7 +20,7 @@ const BoxDraggable: React.FC<BoxDraggableProps> = ({
         backgroundColor: color,
         width,
         height,
-        transform: `translate(${left}px, ${top}px)`
+        transform: `translate(${left}px, ${top}px)`,
       }}
     >
       {children}

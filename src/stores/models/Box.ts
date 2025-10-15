@@ -7,9 +7,9 @@ const BoxModel = types
     height: types.optional(types.number, 100),
     color: types.optional(types.string, "#FFF000"),
     left: types.optional(types.number, 200),
-    top: types.optional(types.number, 100)
+    top: types.optional(types.number, 100),
   })
-  .views(self => ({}))
-  .actions(self => ({}));
+  .views((self) => ({}))
+  .actions((self) => ({}));
 
 export default BoxModel;
