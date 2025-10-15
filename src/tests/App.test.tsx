@@ -11,24 +11,36 @@ afterEach(() => {
   applySnapshot(store, BASE_SNAPSHOT);
 });
 
-describe("App", () => {
-  it("displays the toolbar controls", () => {
-    render(<App />);
+const renderApp = () => render(<App />);
 
+describe("App", () => {
+  it("renders the add-box control", () => {
+    renderApp();
     expect(screen.getByRole("button", { name: /add box/i })).toBeInTheDocument();
+  });
+
+  it("renders the remove-box control", () => {
+    renderApp();
     expect(screen.getByRole("button", { name: /remove box/i })).toBeInTheDocument();
+  });
+
+  it("renders the color picker with an accessible name", () => {
+    renderApp();
     expect(screen.getByLabelText(/box color/i)).toBeInTheDocument();
+  });
+
+  it("displays the selection summary", () => {
+    renderApp();
     expect(screen.getByText(/no boxes selected/i)).toBeInTheDocument();
   });
 
   it("renders the initial box on the canvas", () => {
-    render(<App />);
-
+    renderApp();
     expect(screen.getAllByText(/^box$/i)).toHaveLength(1);
   });
 
   it("reflects new boxes added to the store", async () => {
-    render(<App />);
+    renderApp();
 
     act(() => {
       store.addBox(

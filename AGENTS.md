@@ -37,6 +37,7 @@ Run all commands from the repository root and keep `yarn.lock` as the single sou
 - Emphasize behaviour-driven assertions (selection highlights, counters, drag handles) and add regression coverage when store logic changes; run `yarn test --watchAll=false` (or `yarn test:ci`) for CI parity.
 - Never rely on `--runInBand`; tests must pass under Jest's normal parallel execution so suites remain isolated.
 - Follow React Testing Library philosophy: prefer user-facing queries (role, label, text), avoid implementation details, and keep each test focused on a single behavioural assertion.
+- Keep tests single-purpose whenever possible—prefer one key expectation per test so failures point to a single root cause.
 - Apply a strict red → green → refactor loop:
   - New features: write a failing test that captures the desired behaviour, implement the smallest change to pass it, then iterate.
   - Bug fixes: reproduce the defect with a failing test before touching production code, then make it pass.
