@@ -62,3 +62,12 @@ If you have any questions about the test, you can contact any of us:
 - Julio (juboba@genially.com)
 
 Good Luck!
+
+---
+
+## Developer Notes
+
+- Use the Node version defined in `.nvmrc` (currently Node 22 LTS) via `nvm use` before installing dependencies.
+- The project now runs on TypeScript; run `yarn typecheck`, `yarn test`, and `yarn build` to validate changes.
+- Yarn is the canonical package manager—`yarn install` keeps `yarn.lock` in sync and avoids conflicts with npm.
+- `AGENTS.md` documents workflow conventions, while `logbook.md` captures recent technical decisions for quick onboarding.

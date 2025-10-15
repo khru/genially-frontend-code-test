@@ -9,26 +9,27 @@
 
 ## Build, Test & Development Commands
 ```bash
-nvm use            # align with v16.17.1 from .nvmrc
+nvm use            # picks the Node 22 LTS declared in .nvmrc
 yarn install       # install dependencies using the yarn.lock constraints
 yarn start         # run the dev server on http://localhost:3000 (prompts for alternatives if busy)
 yarn test          # execute Jest + React Testing Library in watch mode
 yarn build         # create an optimized bundle in build/
 yarn typecheck     # run the TypeScript compiler in noEmit mode
 ```
-Run all commands from the repository root and keep `yarn.lock` as the single source of dependency truth.
+Run all commands from the repository root and keep `yarn.lock` as the single source of dependency truth. Avoid `npm` to prevent mixed lockfiles.
 
 ## Coding Style & Naming Conventions
-- Rely on the CRA ESLint configuration (`react-app`); warnings surface during `npm start` and `npm test`.
+- Rely on the CRA ESLint configuration (`react-app`); warnings surface during `yarn start` and `yarn test`.
 - Use 2-space indentation, semicolons, and double quotes to stay consistent with existing files.
 - Name React components with PascalCase files and exports (`BoxDraggable`), while MST models stay singular (`models/Box`).
 - Keep presentation in components and move state mutations into MST actions; inject actions through props where needed.
 - Group styles under meaningful class prefixes in `src/main.css`; keep inline overrides minimal.
+- `.editorconfig` enforces these formatting rules automatically—ensure your editor honors it.
 
 ## Testing Guidelines
 - Jest and React Testing Library are pre-configured via `src/setupTests.ts`; import from `@testing-library/react` by default.
 - Name specs `*.test.tsx` (or `*.test.ts` for utilities) and place them under `src/tests` (or co-locate near the subject file when it aids readability).
-- Emphasize behaviour-driven assertions (selection highlights, counters, drag handles) and add regression coverage when store logic changes; run `npm test -- --watchAll=false` for CI parity.
+- Emphasize behaviour-driven assertions (selection highlights, counters, drag handles) and add regression coverage when store logic changes; run `yarn test --watchAll=false --runInBand` for CI parity.
 
 ## Commit & Pull Request Guidelines
 - Follow the existing history pattern: lowercase Conventional-style prefixes (`feat:`, `fix:`, `chore:`) plus a concise summary.
@@ -41,3 +42,7 @@ Run all commands from the repository root and keep `yarn.lock` as the single sou
 
 ## Definition of Done
 - Do not mark work complete until `yarn typecheck`, all configured linters (surfaced via CRA during `yarn start`/`yarn test`), and `yarn test --watchAll=false --runInBand` finish with no errors or warnings.
+
+## Documentation & Knowledge Sharing
+- Update `README.md` whenever behaviour changes or new setup steps matter to users or reviewers; keep additions concise and empathetic.
+- Keep `AGENTS.md` current—if your workflow evolves (new scripts, linters, deployment steps), amend this guide as part of the change.
