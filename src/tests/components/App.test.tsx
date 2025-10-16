@@ -6,7 +6,8 @@ import App from "../../components/App";
 import store from "../../stores/MainStore";
 import { DEFAULT_POSITION } from "../../application/BoxService";
 import BoxModel from "../../stores/models/Box";
-import { DragEvent, DragServiceProvider } from "../../services/drag";
+import { DragEvent } from "../../application/drag/DragPort";
+import { DragAdapterProvider } from "../../ui/drag/DragAdapterProvider";
 import { createMockDragService } from "../testUtils/createMockDragService";
 
 const BASE_SNAPSHOT = getSnapshot(store);
@@ -25,9 +26,9 @@ describe("App", () => {
   beforeEach(() => {
     dragMock = createMockDragService();
     render(
-      <DragServiceProvider service={dragMock.service}>
+      <DragAdapterProvider service={dragMock.service}>
         <App />
-      </DragServiceProvider>,
+      </DragAdapterProvider>,
     );
   });
 

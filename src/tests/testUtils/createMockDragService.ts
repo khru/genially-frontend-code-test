@@ -1,4 +1,4 @@
-import { DragEvent, DragListeners, DragOptions, DragService, DragInstance } from "../../services/drag";
+import { DragEvent, DragListeners, DragOptions, DragService, DragInstance } from "../../application/drag/DragPort";
 
 type ListenerMap = Map<Element, DragListeners>;
 

@@ -1,6 +1,7 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { DragEvent, DragService, useDragService } from "../services/drag";
+import { DragEvent, DragService } from "../application/drag/DragPort";
+import { useDragAdapter } from "../ui/drag/DragAdapterProvider";
 
 export type BoxDraggableProps = {
   id: string;
@@ -41,7 +42,7 @@ const BoxDraggable: React.FC<BoxDraggableProps> = ({
     userSelect: "",
     webkitUserSelect: "",
   });
-  const contextDragService = useDragService();
+  const contextDragService = useDragAdapter();
 
   React.useEffect(() => {
     positionRef.current = { left, top };
