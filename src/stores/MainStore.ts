@@ -4,8 +4,9 @@ import { defaultBoxService, DEFAULT_POSITION, Position } from "../application/Bo
 import { BoxSelectionService } from "../application/BoxSelectionService";
 import { BoxColorService } from "../application/BoxColorService";
 import { CanvasStateRepository, SerializedBox } from "../domain/CanvasStateRepository";
-import { CanvasBounds, clampPositionWithinBounds } from "../domain/CanvasBounds";
+import { CanvasBounds } from "../domain/CanvasBounds";
 import { createLocalStorageCanvasStateRepository } from "../infrastructure/LocalStorageCanvasStateRepository";
+import { limitPositionWithinCanvas } from "../domain/CanvasPositionLimiter";
 
 type BoxInstance = Instance<typeof BoxModel>;
 
@@ -89,9 +90,11 @@ const MainStore = types
           return;
         }
 
-        const nextPosition = bounds
-          ? clampPositionWithinBounds(position, { width: target.width, height: target.height }, bounds)
-          : position;
+        const nextPosition = limitPositionWithinCanvas({
+          position,
+          size: { width: target.width, height: target.height },
+          bounds,
+        });
 
         target.setPosition(nextPosition);
         updateSelectionService();
