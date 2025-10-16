@@ -25,18 +25,26 @@ const Toolbar: React.FC<ToolbarProps> = ({
   );
 
   return (
-    <div className="toolbar">
-      <button onClick={onAddBox}>Add Box</button>
-      <button onClick={onRemoveBox}>Remove Box</button>
-      <input
-        aria-label="Box color"
-        type="color"
-        value={colorValue}
-        onChange={handleColorInput}
-        onInput={handleColorInput}
-        disabled={isColorPickerDisabled}
-      />
-      <span>{selectionLabel}</span>
+    <div className="toolbar" role="region" aria-label="Canvas controls">
+      <button className="toolbar__button toolbar__button--primary" onClick={onAddBox} type="button">
+        Add Box
+      </button>
+      <button className="toolbar__button toolbar__button--danger" onClick={onRemoveBox} type="button">
+        Remove Box
+      </button>
+      <label className="toolbar__colorControl">
+        <span className="toolbar__colorLabel">Color</span>
+        <input
+          className="toolbar__colorInput"
+          aria-label="Box color"
+          type="color"
+          value={colorValue}
+          onChange={handleColorInput}
+          onInput={handleColorInput}
+          disabled={isColorPickerDisabled}
+        />
+      </label>
+      <span className="toolbar__summary">{selectionLabel}</span>
     </div>
   );
 };
