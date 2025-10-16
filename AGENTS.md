@@ -115,7 +115,8 @@ prevent mixed lockfiles.
   events, while domain logic sits behind ports (stores/services/hooks) that hide implementation details. We apply this
   by:
   - keeping pure domain primitives (factories, ports) in `src/domain` (e.g., `BoxFactory`, `CanvasStateRepository`,
-    `DragAdapter`)
+    `DragAdapter`) and keeping that directory flat (add new domain artefacts next to the existing ones, no extra
+    nesting)
   - collecting use-case/application services in `src/application` (e.g., `BoxService`, selection/color services)
   - wiring concrete infrastructure adapters in `src/infrastructure` (e.g., localStorage persistence, interact.js
     adapter)

@@ -90,3 +90,7 @@ Good Luck!
 
 The latest version of the application is available
 at [https://genially-frontend-interview.netlify.app/](https://genially-frontend-interview.netlify.app/).
+
+## My thought process
+
+I save my thought process on the [logbook](./logbook.md)
