@@ -34,7 +34,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
       <button className="toolbar__button toolbar__button--danger" onClick={onRemoveBox} type="button">
         Remove Box
       </button>
-      <button className="toolbar__button toolbar__button--reset" onClick={onReset} type="button">
+      <button className="toolbar__button" onClick={onReset} type="button">
         Reset
       </button>
       <label className="toolbar__colorControl">
