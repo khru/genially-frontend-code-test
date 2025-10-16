@@ -1,20 +1,19 @@
 import interact from "interactjs";
-import { DragEvent, DragInstance, DragOptions, DragAdapter } from "../domain/DragPort";
+import { DragAdapter, DragEvent, DragInstance, DragOptions } from "../domain/DragPort";
 
-type InteractDragEvent = {
-  dx?: number;
-  dy?: number;
-  target?: EventTarget | null;
-  currentTarget?: EventTarget | null;
-  [key: string]: unknown;
-};
+const mapDragEvent = (event: unknown): DragEvent => {
+  const typedEvent = event as {
+    dx?: number;
+    dy?: number;
+    target?: EventTarget | null;
+    currentTarget?: EventTarget | null;
+  };
+  const { dx = 0, dy = 0, target, currentTarget } = typedEvent;
 
-const mapDragEvent = (event: InteractDragEvent): DragEvent => {
-  const { dx = 0, dy = 0, target } = event;
   return {
     dx,
     dy,
-    target: (target as Element) ?? (event.currentTarget as Element),
+    target: (target as Element) ?? (currentTarget as Element),
     originalEvent: event,
   };
 };
@@ -29,18 +28,26 @@ class InteractDragAdapterInstance implements DragInstance {
   }
 
   draggable(options: DragOptions = {}): DragInstance {
-    const { listeners, ...rest } = options;
+    const { listeners, modifiers, ...restOptions } = options;
+    const providedModifiers = modifiers ? (Array.isArray(modifiers) ? modifiers : [modifiers]) : [];
 
     this.interactable.draggable({
-      ...rest,
+      ...restOptions,
+      modifiers: [
+        ...providedModifiers,
+        interact.modifiers.restrictRect({
+          restriction: "parent",
+          endOnly: true,
+        }),
+      ],
       listeners: {
-        start: (event: InteractDragEvent) => {
+        start: (event) => {
           listeners?.start?.(mapDragEvent(event));
         },
-        move: (event: InteractDragEvent) => {
+        move: (event) => {
           listeners?.move?.(mapDragEvent(event));
         },
-        end: (event: InteractDragEvent) => {
+        end: (event) => {
           listeners?.end?.(mapDragEvent(event));
         },
       },

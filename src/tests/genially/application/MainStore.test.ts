@@ -184,4 +184,21 @@ describe("MainStore", () => {
     expect(persisted?.boxes).toHaveLength(store.boxes.length);
     expect(persisted?.boxes.map((box) => box.id)).toEqual(store.boxes.map((box) => box.id));
   });
+
+  it("should clamp box positions to bounds when canvas dimensions are provided", () => {
+    const { store } = createStore();
+
+    applySnapshot(store, {
+      boxes: [{ id: "box-1", color: "#111111", width: 200, height: 100, left: 0, top: 0 }],
+      selectedBoxIds: [],
+    });
+
+    store.updateBoxPosition("box-1", { left: 400, top: 300 }, { width: 250, height: 220 });
+    expect(store.boxes[0].left).toBe(50);
+    expect(store.boxes[0].top).toBe(120);
+
+    store.updateBoxPosition("box-1", { left: -40, top: -20 }, { width: 250, height: 220 });
+    expect(store.boxes[0].left).toBe(0);
+    expect(store.boxes[0].top).toBe(0);
+  });
 });
