@@ -107,6 +107,13 @@ const MainStore = types
           box.setColor(color);
         });
       },
+      reset() {
+        self.boxes.replace([]);
+        self.selectedBoxIds.replace([]);
+        updateSelectionService([]);
+        updateColorService([]);
+        this.addBoxAtDefaultPosition();
+      },
     };
   })
   .views((self) => ({

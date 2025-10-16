@@ -96,6 +96,18 @@ class LocalStorageCanvasStateRepository implements CanvasStateRepository {
       /* no-op */
     }
   }
+
+  restore() {
+    if (!this.storage) {
+      return;
+    }
+
+    try {
+      this.storage.removeItem(STORAGE_KEY);
+    } catch (error) {
+      /* no-op */
+    }
+  }
 }
 
 const createLocalStorageCanvasStateRepository = (storage?: Storage): CanvasStateRepository =>

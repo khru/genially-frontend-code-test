@@ -215,4 +215,30 @@ describe("App", () => {
     expect(screen.getByText(/no boxes selected/i)).toBeInTheDocument();
     expect(store.boxes).toHaveLength(0);
   });
+
+  it("should reset the canvas when clicking the reset button then the canvas have default box", async () => {
+    renderApp();
+    const user = userEvent.setup();
+    act(() => {
+      store.addBox(
+        BoxModel.create({
+          id: uuid(),
+          color: "#abcdef",
+          left: 80,
+          top: 120,
+        }),
+      );
+    });
+    const boxButtons = screen.getAllByRole("button", { name: /^box$/i });
+    await user.click(boxButtons[0]);
+
+    const boxes = await screen.findAllByText(/^box$/i);
+    expect(boxes).toHaveLength(2);
+
+    const resetButton = screen.getByRole("button", { name: /^reset$/i });
+    await user.click(resetButton);
+
+    const finalBoxes = await screen.findAllByText(/^box$/i);
+    expect(finalBoxes).toHaveLength(1);
+  });
 });

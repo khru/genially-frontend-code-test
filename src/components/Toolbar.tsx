@@ -3,6 +3,7 @@ import React from "react";
 type ToolbarProps = {
   onAddBox: () => void;
   onRemoveBox: () => void;
+  onReset: () => void;
   colorValue: string;
   onChangeColor: (color: string) => void;
   isColorPickerDisabled: boolean;
@@ -12,6 +13,7 @@ type ToolbarProps = {
 const Toolbar: React.FC<ToolbarProps> = ({
   onAddBox,
   onRemoveBox,
+  onReset,
   colorValue,
   onChangeColor,
   isColorPickerDisabled,
@@ -31,6 +33,9 @@ const Toolbar: React.FC<ToolbarProps> = ({
       </button>
       <button className="toolbar__button toolbar__button--danger" onClick={onRemoveBox} type="button">
         Remove Box
+      </button>
+      <button className="toolbar__button toolbar__button--reset" onClick={onReset} type="button">
+        Reset
       </button>
       <label className="toolbar__colorControl">
         <span className="toolbar__colorLabel">Color</span>

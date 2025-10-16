@@ -17,6 +17,10 @@ const AppView: React.FC = () => {
     store.updateSelectedBoxesColor(color);
   }, []);
 
+  const handleResetChange = React.useCallback(() => {
+    store.reset();
+  }, []);
+
   const selectionCount = store.selectedBoxIds.length;
   const hasSelection = selectionCount > 0;
   const selectionLabel = hasSelection
@@ -29,6 +33,7 @@ const AppView: React.FC = () => {
       <Toolbar
         onAddBox={handleAddBox}
         onRemoveBox={handleRemoveBox}
+        onReset={handleResetChange}
         colorValue={selectedColor}
         onChangeColor={handleColorChange}
         isColorPickerDisabled={!hasSelection}
