@@ -1,26 +1,34 @@
+[![Netlify Status](https://api.netlify.com/api/v1/badges/624f3d4a-73b1-410f-af06-2f7bdb3256bf/deploy-status)](https://app.netlify.com/projects/genially-frontend-interview/deploys)
+
 Welcome to this code test! :)
 
-The main objective of this technical excercise is for you to get a good grasp of what kind of problems we encounter on Genially. We wouldn't want you to find some nasty surprises if you decide to join us. Also, it's a good starting point to have a technical conversation during an interview.
+The main objective of this technical excercise is for you to get a good grasp of what kind of problems we encounter on
+Genially. We wouldn't want you to find some nasty surprises if you decide to join us. Also, it's a good starting point
+to have a technical conversation during an interview.
 
 # Technology included
 
-As you can see, the code test is a simple create-react-app, with some included libraries and some code bundled with it. Let's go through some of the lesser-known technologies.
+As you can see, the code test is a simple create-react-app, with some included libraries and some code bundled with it.
+Let's go through some of the lesser-known technologies.
 
 ## mobx-state-tree (MST for short)
 
-This is the app state manager we use at our React apps. It's meant to be used with mobx, and unlike it, is very opinionated as how you should define your stores, models etc.
+This is the app state manager we use at our React apps. It's meant to be used with mobx, and unlike it, is very
+opinionated as how you should define your stores, models etc.
 
 https://github.com/mobxjs/mobx-state-tree
 
 ## interact.js
 
-Genially is a very interactivity-heavy application. Almost everything you use on the app can be moved around with your mouse, selected, scaled, rotated, etc. This library does most of the heavy lifting for us.
+Genially is a very interactivity-heavy application. Almost everything you use on the app can be moved around with your
+mouse, selected, scaled, rotated, etc. This library does most of the heavy lifting for us.
 
 https://interactjs.io/
 
 # Test requirements
 
-The test is an extremely simplified version of the Genially editor. We provide you a working area, named `Canvas`, and elements that are displayed inside of it, named `Box`.
+The test is an extremely simplified version of the Genially editor. We provide you a working area, named `Canvas`, and
+elements that are displayed inside of it, named `Box`.
 
 We've also added a rudimentary toolbar for some of the required functionality.
 
@@ -37,17 +45,22 @@ When finished, the app should let the user:
 - Undo / Redo capabilities
   - **hint**: mobx-state-tree provides a middleware for this.
 
-If you are unable to do some of the above, don't worry! But we would ask to at least explain what went wrong, how you would tackle the problem, or if you have no idea whatsoever 😃
+If you are unable to do some of the above, don't worry! But we would ask to at least explain what went wrong, how you
+would tackle the problem, or if you have no idea whatsoever 😃
 
-Even if you manage to do everything, we also greatly appreciate comments on decisions you took, issues you faced or limitations you've left behind on purpose.
+Even if you manage to do everything, we also greatly appreciate comments on decisions you took, issues you faced or
+limitations you've left behind on purpose.
 
 A good place to include those comments is the README.md of the repo.
 
 # Delivery method
 
-Send it to us however it suits you, but our preferred method is to get access to a **private fork of the repo**. This way, we can see historical changes, and a complete diff against the original repo on a PR. It's also a great way to write down feedback and discussion points for the interview afterwards.
+Send it to us however it suits you, but our preferred method is to get access to a **private fork of the repo**. This
+way, we can see historical changes, and a complete diff against the original repo on a PR. It's also a great way to
+write down feedback and discussion points for the interview afterwards.
 
-If you opt for a fork with limited access, see the contact list below for people you can give access to. Please always include Chema & Román, and then someone else (or all of them!).
+If you opt for a fork with limited access, see the contact list below for people you can give access to. Please always
+include Chema & Román, and then someone else (or all of them!).
 
 # Contact
 
@@ -70,4 +83,10 @@ Good Luck!
 - Use the Node version defined in `.nvmrc` (currently Node 22 LTS) via `nvm use` before installing dependencies.
 - The project now runs on TypeScript; run `yarn typecheck`, `yarn test`, and `yarn build` to validate changes.
 - Yarn is the canonical package manager—`yarn install` keeps `yarn.lock` in sync and avoids conflicts with npm.
-- `AGENTS.md` documents workflow conventions, while `logbook.md` captures recent technical decisions for quick onboarding.
+- `AGENTS.md` documents workflow conventions, while `logbook.md` captures recent technical decisions for quick
+  onboarding.
+
+## Live Demo
+
+The latest version of the application is available
+at [https://genially-frontend-interview.netlify.app/](https://genially-frontend-interview.netlify.app/).
