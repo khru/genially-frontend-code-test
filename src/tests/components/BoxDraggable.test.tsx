@@ -1,7 +1,7 @@
 import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import BoxDraggable, { BoxDraggableProps } from "../../components/BoxDraggable";
-import { DragEvent } from "../../application/drag/DragPort";
+import { DragEvent } from "../../domain/DragPort";
 import { DragAdapterProvider } from "../../ui/drag/DragAdapterProvider";
 import { createMockDragService } from "../testUtils/createMockDragService";
 

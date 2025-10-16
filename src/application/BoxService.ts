@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import getRandomColor from "../utils/getRandomColor";
-import { BoxDTO, BoxFactory, DEFAULT_POSITION, Position } from "../domain/box/BoxFactory";
+import { BoxDTO, BoxFactory, DEFAULT_POSITION, Position } from "../domain/BoxFactory";
 
 class BoxService {
   constructor(private readonly factory: BoxFactory) {}

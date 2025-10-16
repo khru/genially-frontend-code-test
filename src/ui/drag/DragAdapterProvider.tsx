@@ -1,5 +1,5 @@
 import React from "react";
-import { DragService } from "../../application/drag/DragPort";
+import { DragService } from "../../domain/DragPort";
 import { createInteractDragAdapter } from "../../infrastructure/drag/InteractDragAdapter";
 
 const defaultDragAdapter = createInteractDragAdapter();

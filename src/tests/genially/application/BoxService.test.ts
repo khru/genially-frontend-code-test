@@ -1,4 +1,4 @@
-import { BoxFactory, DEFAULT_POSITION, Position } from "../../../domain/box/BoxFactory";
+import { BoxFactory, DEFAULT_POSITION, Position } from "../../../domain/BoxFactory";
 import { BoxService } from "../../../application/BoxService";
 
 describe("BoxService", () => {

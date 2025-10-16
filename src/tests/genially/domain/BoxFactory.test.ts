@@ -1,4 +1,4 @@
-import { BoxFactory, DEFAULT_POSITION, Position } from "../../../domain/box/BoxFactory";
+import { BoxFactory, DEFAULT_POSITION, Position } from "../../../domain/BoxFactory";
 
 const createFactory = () =>
   new BoxFactory({

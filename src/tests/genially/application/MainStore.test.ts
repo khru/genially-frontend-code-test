@@ -1,14 +1,35 @@
-import { applySnapshot, getSnapshot } from "mobx-state-tree";
-import store from "../../../stores/MainStore";
+import { applySnapshot } from "mobx-state-tree";
+import { createMainStore } from "../../../stores/MainStore";
+import { CanvasStateRepository, CanvasStateSnapshot } from "../../../domain/CanvasStateRepository";
 
-const BASE_SNAPSHOT = getSnapshot(store);
+class InMemoryCanvasStateRepository implements CanvasStateRepository {
+  private snapshot: CanvasStateSnapshot | undefined;
 
-afterEach(() => {
-  applySnapshot(store, BASE_SNAPSHOT);
-});
+  load(): CanvasStateSnapshot | undefined {
+    return this.snapshot ? { boxes: this.snapshot.boxes.map((box) => ({ ...box })) } : undefined;
+  }
+
+  save(snapshot: CanvasStateSnapshot): void {
+    this.snapshot = { boxes: snapshot.boxes.map((box) => ({ ...box })) };
+  }
+
+  getState(): CanvasStateSnapshot | undefined {
+    return this.snapshot ? { boxes: this.snapshot.boxes.map((box) => ({ ...box })) } : undefined;
+  }
+}
+
+const createStore = (initialState?: CanvasStateSnapshot) => {
+  const repository = new InMemoryCanvasStateRepository();
+  if (initialState) {
+    repository.save(initialState);
+  }
+  const store = createMainStore({ repository });
+  return { store, repository };
+};
 
 describe("MainStore", () => {
   it("should create a box with provided coordinates when the store adds a positioned box then the dto reflects the position", () => {
+    const { store } = createStore();
     applySnapshot(store, {
       boxes: [],
       selectedBoxIds: [],
@@ -22,6 +43,7 @@ describe("MainStore", () => {
   });
 
   it("should propagate the color to every selected box when the store updates selection color then all targets change", () => {
+    const { store } = createStore();
     applySnapshot(store, {
       boxes: [
         { id: "box-1", color: "#111111", left: 0, top: 0 },
@@ -42,6 +64,7 @@ describe("MainStore", () => {
   });
 
   it("should return only selected boxes when querying the view then the list matches current selection", () => {
+    const { store } = createStore();
     applySnapshot(store, {
       boxes: [
         { id: "box-1", color: "#111111", left: 0, top: 0 },
@@ -56,6 +79,7 @@ describe("MainStore", () => {
   });
 
   it("should surface the latest id when computing lastSelectedBox then the reference matches the last selection", () => {
+    const { store } = createStore();
     applySnapshot(store, {
       boxes: [
         { id: "box-1", color: "#111111", left: 0, top: 0 },
@@ -71,6 +95,7 @@ describe("MainStore", () => {
   });
 
   it("should clear tracking when the store clears the selection then no ids remain selected", () => {
+    const { store } = createStore();
     applySnapshot(store, {
       boxes: [
         { id: "box-1", color: "#111111", left: 0, top: 0 },
@@ -87,6 +112,7 @@ describe("MainStore", () => {
   });
 
   it("should keep selection unique when the same box is selected twice then the ids array remains deduplicated", () => {
+    const { store } = createStore();
     applySnapshot(store, {
       boxes: [{ id: "box-1", color: "#111111", left: 0, top: 0 }],
       selectedBoxIds: [],
@@ -99,6 +125,7 @@ describe("MainStore", () => {
   });
 
   it("should persist the new position when the box moves then the store reflects the updated coordinates", () => {
+    const { store } = createStore();
     applySnapshot(store, {
       boxes: [{ id: "box-1", color: "#111111", left: 5, top: 10 }],
       selectedBoxIds: [],
@@ -111,6 +138,7 @@ describe("MainStore", () => {
   });
 
   it("should remove selected boxes when requested then they no longer exist in the store", () => {
+    const { store } = createStore();
     applySnapshot(store, {
       boxes: [
         { id: "box-1", color: "#111111", left: 0, top: 0 },
@@ -125,5 +153,35 @@ describe("MainStore", () => {
 
     expect(store.boxes).toHaveLength(0);
     expect(store.selectedBoxIds).toHaveLength(0);
+  });
+
+  it("should hydrate boxes from the repository when the store is created", () => {
+    const initialState: CanvasStateSnapshot = {
+      boxes: [
+        { id: "box-1", color: "#123456", left: 12, top: 34, width: 200, height: 100 },
+        { id: "box-2", color: "#abcdef", left: 56, top: 78, width: 150, height: 120 },
+      ],
+    };
+
+    const { store } = createStore(initialState);
+
+    expect(store.boxes.map((box) => ({ id: box.id, color: box.color, left: box.left, top: box.top }))).toEqual([
+      { id: "box-1", color: "#123456", left: 12, top: 34 },
+      { id: "box-2", color: "#abcdef", left: 56, top: 78 },
+    ]);
+    expect(store.selectedBoxIds).toHaveLength(0);
+  });
+
+  it("should persist boxes to the repository when the store mutates", () => {
+    const { store, repository } = createStore();
+
+    store.addBoxAtDefaultPosition();
+    store.selectBox(store.boxes[0].id);
+    store.updateSelectedBoxesColor("#ffffff");
+
+    const persisted = repository.getState();
+
+    expect(persisted?.boxes).toHaveLength(store.boxes.length);
+    expect(persisted?.boxes.map((box) => box.id)).toEqual(store.boxes.map((box) => box.id));
   });
 });

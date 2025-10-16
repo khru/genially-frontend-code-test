@@ -1,5 +1,5 @@
 import interact from "interactjs";
-import { DragEvent, DragInstance, DragOptions, DragService } from "../../application/drag/DragPort";
+import { DragEvent, DragInstance, DragOptions, DragService } from "../../domain/DragPort";
 
 type InteractDragEvent = {
   dx?: number;

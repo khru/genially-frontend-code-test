@@ -1,8 +1,10 @@
-import { Instance, types } from "mobx-state-tree";
+import { Instance, SnapshotOut, getSnapshot, onSnapshot, types } from "mobx-state-tree";
 import BoxModel from "./models/Box";
 import { defaultBoxService, DEFAULT_POSITION, Position } from "../application/BoxService";
 import { BoxSelectionService } from "../application/BoxSelectionService";
 import { BoxColorService } from "../application/BoxColorService";
+import { CanvasStateRepository, SerializedBox } from "../domain/CanvasStateRepository";
+import { createLocalStorageCanvasStateRepository } from "../infrastructure/canvas/LocalStorageCanvasStateRepository";
 
 type BoxInstance = Instance<typeof BoxModel>;
 
@@ -29,6 +31,12 @@ const MainStore = types
     };
 
     return {
+      hydrateBoxes(boxes: SerializedBox[]) {
+        self.boxes.replace(boxes.map((box) => BoxModel.create(box)));
+        self.selectedBoxIds.replace([]);
+        updateSelectionService([]);
+        updateColorService([]);
+      },
       addBox(box: BoxInstance) {
         self.boxes.push(box);
         updateSelectionService();
@@ -109,13 +117,41 @@ const MainStore = types
   }));
 
 type MainStoreInstance = Instance<typeof MainStore>;
+type MainStoreSnapshot = SnapshotOut<typeof MainStore>;
 
-const store: MainStoreInstance = MainStore.create({
-  boxes: [],
-  selectedBoxIds: [],
-});
+type CreateMainStoreDependencies = {
+  repository?: CanvasStateRepository;
+};
 
-store.addBoxAtDefaultPosition();
+const createMainStore = ({ repository }: CreateMainStoreDependencies = {}): MainStoreInstance => {
+  const canvasRepository = repository ?? createLocalStorageCanvasStateRepository();
+
+  const store: MainStoreInstance = MainStore.create({
+    boxes: [],
+    selectedBoxIds: [],
+  });
+
+  const restored = canvasRepository.load();
+  if (restored && restored.boxes.length > 0) {
+    store.hydrateBoxes(restored.boxes);
+  } else {
+    store.addBoxAtDefaultPosition();
+  }
+
+  const toSerializedBoxes = (snapshot: MainStoreSnapshot): SerializedBox[] =>
+    snapshot.boxes.map(({ id, width, height, color, left, top }) => ({ id, width, height, color, left, top }));
+
+  const persist = (snapshot: MainStoreSnapshot) => {
+    canvasRepository.save({ boxes: toSerializedBoxes(snapshot) });
+  };
+
+  persist(getSnapshot(store));
+  onSnapshot(store, persist);
+
+  return store;
+};
+
+const store = createMainStore();
 
 export default store;
-export { DEFAULT_POSITION };
+export { DEFAULT_POSITION, createMainStore };

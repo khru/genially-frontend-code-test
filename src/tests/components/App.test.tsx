@@ -4,9 +4,9 @@ import userEvent from "@testing-library/user-event";
 import { v4 as uuid } from "uuid";
 import App from "../../components/App";
 import store from "../../stores/MainStore";
-import { DEFAULT_POSITION } from "../../application/BoxService";
+import { DEFAULT_POSITION } from "../../domain/BoxFactory";
 import BoxModel from "../../stores/models/Box";
-import { DragEvent } from "../../application/drag/DragPort";
+import { DragEvent } from "../../domain/DragPort";
 import { DragAdapterProvider } from "../../ui/drag/DragAdapterProvider";
 import { createMockDragService } from "../testUtils/createMockDragService";
 

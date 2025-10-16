@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { DragEvent, DragService } from "../application/drag/DragPort";
+import { DragEvent, DragService } from "../domain/DragPort";
 import { useDragAdapter } from "../ui/drag/DragAdapterProvider";
 
 export type BoxDraggableProps = {
