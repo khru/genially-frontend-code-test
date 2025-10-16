@@ -34,7 +34,9 @@ describe("App", () => {
 
   afterEach(() => {
     dragMock.reset();
-    applySnapshot(store, BASE_SNAPSHOT);
+    act(() => {
+      applySnapshot(store, BASE_SNAPSHOT);
+    });
   });
 
   it("should render add box control when the app mounts then the button is visible", () => {
