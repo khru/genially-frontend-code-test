@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import React from "react";
-import { DragEvent, DragService } from "../domain/DragPort";
-import { useDragAdapter } from "../ui/drag/DragAdapterProvider";
+import { DragEvent, DragAdapter } from "../domain/DragPort";
+import { useDragAdapter } from "../ui/DragAdapterProvider";
 
 export type BoxDraggableProps = {
   id: string;
@@ -16,7 +16,7 @@ export type BoxDraggableProps = {
   onDragStart?: () => void;
   onDragMove?: (position: { left: number; top: number }) => void;
   onDragEnd?: (position: { left: number; top: number }) => void;
-  dragService?: DragService;
+  dragAdapter?: DragAdapter;
 };
 
 const BoxDraggable: React.FC<BoxDraggableProps> = ({
@@ -32,7 +32,7 @@ const BoxDraggable: React.FC<BoxDraggableProps> = ({
   onDragStart,
   onDragMove,
   onDragEnd,
-  dragService,
+  dragAdapter,
 }) => {
   const nodeRef = React.useRef<HTMLDivElement | null>(null);
   const [isDragging, setIsDragging] = React.useState(false);
@@ -42,7 +42,7 @@ const BoxDraggable: React.FC<BoxDraggableProps> = ({
     userSelect: "",
     webkitUserSelect: "",
   });
-  const contextDragService = useDragAdapter();
+  const contextDragAdapter = useDragAdapter();
 
   React.useEffect(() => {
     positionRef.current = { left, top };
@@ -51,9 +51,9 @@ const BoxDraggable: React.FC<BoxDraggableProps> = ({
 
   React.useEffect(() => {
     const element = nodeRef.current;
-    const service = dragService ?? contextDragService;
+    const adapter = dragAdapter ?? contextDragAdapter;
 
-    if (!element || !service.isSupported()) {
+    if (!element || !adapter.isSupported()) {
       return undefined;
     }
 
@@ -77,7 +77,7 @@ const BoxDraggable: React.FC<BoxDraggableProps> = ({
       }
     };
 
-    const instance = service.createInstance(element);
+    const instance = adapter.createInstance(element);
 
     instance.draggable({
       listeners: {
@@ -110,7 +110,7 @@ const BoxDraggable: React.FC<BoxDraggableProps> = ({
       setIsDragging(false);
       instance.unset();
     };
-  }, [contextDragService, dragService, onDragStart, onDragMove, onDragEnd]);
+  }, [contextDragAdapter, dragAdapter, onDragStart, onDragMove, onDragEnd]);
 
   return (
     <div

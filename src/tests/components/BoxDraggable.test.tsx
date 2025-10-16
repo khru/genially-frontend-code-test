@@ -2,8 +2,8 @@ import { act, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import BoxDraggable, { BoxDraggableProps } from "../../components/BoxDraggable";
 import { DragEvent } from "../../domain/DragPort";
-import { DragAdapterProvider } from "../../ui/drag/DragAdapterProvider";
-import { createMockDragService } from "../testUtils/createMockDragService";
+import { DragAdapterProvider } from "../../ui/DragAdapterProvider";
+import { createMockDragAdapter } from "../testUtils/createMockDragAdapter";
 
 const createDragEvent = (overrides: Partial<DragEvent>, element: Element): DragEvent => ({
   dx: 0,
@@ -27,10 +27,10 @@ const minimalProps: BoxDraggableProps = {
 };
 
 describe("BoxDraggable", () => {
-  let dragMock: ReturnType<typeof createMockDragService>;
+  let dragMock: ReturnType<typeof createMockDragAdapter>;
 
   beforeEach(() => {
-    dragMock = createMockDragService();
+    dragMock = createMockDragAdapter();
   });
 
   afterEach(() => {
@@ -41,7 +41,7 @@ describe("BoxDraggable", () => {
     const user = userEvent.setup();
     const onSelect = jest.fn();
     render(
-      <DragAdapterProvider service={dragMock.service}>
+      <DragAdapterProvider service={dragMock.adapter}>
         <BoxDraggable {...minimalProps} onSelect={onSelect}>
           <span>content</span>
         </BoxDraggable>
@@ -55,7 +55,7 @@ describe("BoxDraggable", () => {
 
   it("should expose aria-pressed true when the box is selected then the accessibility state matches", () => {
     render(
-      <DragAdapterProvider service={dragMock.service}>
+      <DragAdapterProvider service={dragMock.adapter}>
         <BoxDraggable {...minimalProps} isSelected>
           <span>content</span>
         </BoxDraggable>
@@ -67,7 +67,7 @@ describe("BoxDraggable", () => {
 
   it("should apply transform and sizing styles based on props then the element reflects positioning", () => {
     render(
-      <DragAdapterProvider service={dragMock.service}>
+      <DragAdapterProvider service={dragMock.adapter}>
         <BoxDraggable {...minimalProps}>
           <span>content</span>
         </BoxDraggable>
@@ -82,7 +82,7 @@ describe("BoxDraggable", () => {
     const onDragStart = jest.fn();
     const onSelect = jest.fn();
     render(
-      <DragAdapterProvider service={dragMock.service}>
+      <DragAdapterProvider service={dragMock.adapter}>
         <BoxDraggable {...minimalProps} isSelected={false} onDragStart={onDragStart} onSelect={onSelect}>
           <span>content</span>
         </BoxDraggable>
@@ -102,7 +102,7 @@ describe("BoxDraggable", () => {
   it("should update the transform while dragging when the pointer moves then the box follows the pointer", async () => {
     const onDragMove = jest.fn();
     render(
-      <DragAdapterProvider service={dragMock.service}>
+      <DragAdapterProvider service={dragMock.adapter}>
         <BoxDraggable {...minimalProps} left={5} top={6} onDragMove={onDragMove}>
           <span>content</span>
         </BoxDraggable>
@@ -123,7 +123,7 @@ describe("BoxDraggable", () => {
   it("should persist the new position when dragging ends then the callback receives the final coordinates", async () => {
     const onDragEnd = jest.fn();
     render(
-      <DragAdapterProvider service={dragMock.service}>
+      <DragAdapterProvider service={dragMock.adapter}>
         <BoxDraggable {...minimalProps} left={2} top={4} onDragEnd={onDragEnd}>
           <span>content</span>
         </BoxDraggable>

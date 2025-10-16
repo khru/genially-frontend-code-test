@@ -1,4 +1,4 @@
-import { createLocalStorageCanvasStateRepository } from "../../infrastructure/canvas/LocalStorageCanvasStateRepository";
+import { createLocalStorageCanvasStateRepository } from "../../infrastructure/LocalStorageCanvasStateRepository";
 
 describe("LocalStorageCanvasStateRepository", () => {
   beforeEach(() => {

@@ -1,12 +1,12 @@
 import React from "react";
-import { DragService } from "../../domain/DragPort";
-import { createInteractDragAdapter } from "../../infrastructure/drag/InteractDragAdapter";
+import { DragAdapter } from "../domain/DragPort";
+import { createInteractDragAdapter } from "../infrastructure/InteractDragAdapter";
 
 const defaultDragAdapter = createInteractDragAdapter();
-const DragAdapterContext = React.createContext<DragService>(defaultDragAdapter);
+const DragAdapterContext = React.createContext<DragAdapter>(defaultDragAdapter);
 
 type DragAdapterProviderProps = {
-  service?: DragService;
+  service?: DragAdapter;
   children: React.ReactNode;
 };
 
@@ -15,6 +15,6 @@ const DragAdapterProvider: React.FC<DragAdapterProviderProps> = ({ service, chil
   return <DragAdapterContext.Provider value={value}>{children}</DragAdapterContext.Provider>;
 };
 
-const useDragAdapter = (): DragService => React.useContext(DragAdapterContext);
+const useDragAdapter = (): DragAdapter => React.useContext(DragAdapterContext);
 
 export { DragAdapterProvider, useDragAdapter, defaultDragAdapter };

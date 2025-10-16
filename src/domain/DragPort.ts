@@ -21,7 +21,7 @@ export interface DragInstance {
   unset(): void;
 }
 
-export interface DragService {
+export interface DragAdapter {
   createInstance(element: Element): DragInstance;
   isSupported(): boolean;
 }

@@ -1,4 +1,4 @@
-import { CanvasStateRepository, CanvasStateSnapshot } from "../../domain/CanvasStateRepository";
+import { CanvasStateRepository, CanvasStateSnapshot } from "../domain/CanvasStateRepository";
 
 const STORAGE_KEY = "canvas-state";
 

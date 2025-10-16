@@ -4,7 +4,7 @@ import { defaultBoxService, DEFAULT_POSITION, Position } from "../application/Bo
 import { BoxSelectionService } from "../application/BoxSelectionService";
 import { BoxColorService } from "../application/BoxColorService";
 import { CanvasStateRepository, SerializedBox } from "../domain/CanvasStateRepository";
-import { createLocalStorageCanvasStateRepository } from "../infrastructure/canvas/LocalStorageCanvasStateRepository";
+import { createLocalStorageCanvasStateRepository } from "../infrastructure/LocalStorageCanvasStateRepository";
 
 type BoxInstance = Instance<typeof BoxModel>;
 

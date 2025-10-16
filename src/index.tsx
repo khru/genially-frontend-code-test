@@ -2,7 +2,7 @@ import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./main.css";
 import App from "./components/App";
-import { DragAdapterProvider, defaultDragAdapter } from "./ui/drag/DragAdapterProvider";
+import { DragAdapterProvider, defaultDragAdapter } from "./ui/DragAdapterProvider";
 import * as serviceWorker from "./serviceWorker";
 
 const rootElement = document.getElementById("root");

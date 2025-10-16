@@ -1,4 +1,4 @@
-import { DragEvent, DragListeners, DragOptions, DragService, DragInstance } from "../../domain/DragPort";
+import { DragEvent, DragListeners, DragOptions, DragAdapter, DragInstance } from "../../domain/DragPort";
 
 type ListenerMap = Map<Element, DragListeners>;
 
@@ -23,7 +23,7 @@ class MockDragInstance implements DragInstance {
   }
 }
 
-class MockDragService implements DragService {
+class MockDragAdapter implements DragAdapter {
   private readonly listenersMap: ListenerMap;
 
   constructor(listenersMap: ListenerMap) {
@@ -46,12 +46,12 @@ const trigger = (listeners: DragListeners | undefined, type: keyof DragListeners
   }
 };
 
-export const createMockDragService = () => {
+export const createMockDragAdapter = () => {
   const listenersMap: ListenerMap = new Map();
-  const service = new MockDragService(listenersMap);
+  const service = new MockDragAdapter(listenersMap);
 
   return {
-    service,
+    adapter: service,
     triggerStart(element: Element, event: DragEvent) {
       trigger(listenersMap.get(element), "start", event);
     },

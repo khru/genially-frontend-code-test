@@ -7,8 +7,8 @@ import store from "../../stores/MainStore";
 import { DEFAULT_POSITION } from "../../domain/BoxFactory";
 import BoxModel from "../../stores/models/Box";
 import { DragEvent } from "../../domain/DragPort";
-import { DragAdapterProvider } from "../../ui/drag/DragAdapterProvider";
-import { createMockDragService } from "../testUtils/createMockDragService";
+import { DragAdapterProvider } from "../../ui/DragAdapterProvider";
+import { createMockDragAdapter } from "../testUtils/createMockDragAdapter";
 
 const BASE_SNAPSHOT = getSnapshot(store);
 
@@ -20,13 +20,13 @@ const createDragEvent = (overrides: Partial<DragEvent>, element: Element): DragE
 });
 
 describe("App", () => {
-  let dragMock: ReturnType<typeof createMockDragService>;
+  let dragMock: ReturnType<typeof createMockDragAdapter>;
 
   /* eslint-disable testing-library/no-render-in-lifecycle */
   beforeEach(() => {
-    dragMock = createMockDragService();
+    dragMock = createMockDragAdapter();
     render(
-      <DragAdapterProvider service={dragMock.service}>
+      <DragAdapterProvider service={dragMock.adapter}>
         <App />
       </DragAdapterProvider>,
     );

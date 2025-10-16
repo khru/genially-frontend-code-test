@@ -1,5 +1,5 @@
 import interact from "interactjs";
-import { DragEvent, DragInstance, DragOptions, DragService } from "../../domain/DragPort";
+import { DragEvent, DragInstance, DragOptions, DragAdapter } from "../domain/DragPort";
 
 type InteractDragEvent = {
   dx?: number;
@@ -54,7 +54,7 @@ class InteractDragAdapterInstance implements DragInstance {
   }
 }
 
-class InteractDragAdapter implements DragService {
+class InteractDragAdapter implements DragAdapter {
   createInstance(element: Element): DragInstance {
     return new InteractDragAdapterInstance(element);
   }
@@ -64,6 +64,6 @@ class InteractDragAdapter implements DragService {
   }
 }
 
-const createInteractDragAdapter = (): DragService => new InteractDragAdapter();
+const createInteractDragAdapter = (): DragAdapter => new InteractDragAdapter();
 
 export { createInteractDragAdapter, InteractDragAdapter };
