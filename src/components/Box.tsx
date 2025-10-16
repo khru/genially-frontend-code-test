@@ -11,9 +11,9 @@ export type BoxProps = BoxDraggableProps & {
   isSelected: boolean;
 };
 
-const Box: React.FC<BoxProps> = ({ box: _box, onSelect, isSelected, ...rest }) => (
+const Box: React.FC<BoxProps> = ({ box: _box, children, onSelect, isSelected, ...rest }) => (
   <BoxDraggable {...rest} onSelect={onSelect} isSelected={isSelected}>
-    <div>Box</div>
+    <div>{children || "Box"}</div>
   </BoxDraggable>
 );
 

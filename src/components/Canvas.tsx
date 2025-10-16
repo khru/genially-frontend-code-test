@@ -10,8 +10,19 @@ type CanvasProps = {
 };
 
 const Canvas: React.FC<CanvasProps> = ({ store }) => {
+  const handleClearSelection = React.useCallback(() => {
+    store.clearSelection();
+  }, [store]);
+
+  const handleDragEnd = React.useCallback(
+    (id: string, position: { left: number; top: number }) => {
+      store.updateBoxPosition(id, position);
+    },
+    [store],
+  );
+
   return (
-    <div className="canva" data-testid="canvas" onClick={() => store.clearSelection()} role="presentation">
+    <div className="canva" data-testid="canvas" onClick={handleClearSelection} role="presentation">
       {store.boxes.map((box: BoxInstance) => (
         <Box
           id={box.id}
@@ -24,6 +35,7 @@ const Canvas: React.FC<CanvasProps> = ({ store }) => {
           box={box}
           isSelected={store.isBoxSelected(box.id)}
           onSelect={(id) => store.selectBox(id)}
+          onDragEnd={(position) => handleDragEnd(box.id, position)}
         />
       ))}
     </div>

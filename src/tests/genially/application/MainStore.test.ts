@@ -97,4 +97,33 @@ describe("MainStore", () => {
 
     expect(store.selectedBoxIds).toEqual(["box-1"]);
   });
+
+  it("should persist the new position when the box moves then the store reflects the updated coordinates", () => {
+    applySnapshot(store, {
+      boxes: [{ id: "box-1", color: "#111111", left: 5, top: 10 }],
+      selectedBoxIds: [],
+    });
+
+    store.updateBoxPosition("box-1", { left: 20, top: 25 });
+
+    expect(store.boxes[0].left).toBe(20);
+    expect(store.boxes[0].top).toBe(25);
+  });
+
+  it("should remove selected boxes when requested then they no longer exist in the store", () => {
+    applySnapshot(store, {
+      boxes: [
+        { id: "box-1", color: "#111111", left: 0, top: 0 },
+        { id: "box-2", color: "#222222", left: 10, top: 10 },
+      ],
+      selectedBoxIds: [],
+    });
+
+    store.selectBox("box-1");
+    store.selectBox("box-2");
+    store.removeSelectedBoxes();
+
+    expect(store.boxes).toHaveLength(0);
+    expect(store.selectedBoxIds).toHaveLength(0);
+  });
 });

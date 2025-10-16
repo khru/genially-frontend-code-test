@@ -2,6 +2,7 @@ import React from "react";
 
 type ToolbarProps = {
   onAddBox: () => void;
+  onRemoveBox: () => void;
   colorValue: string;
   onChangeColor: (color: string) => void;
   isColorPickerDisabled: boolean;
@@ -10,6 +11,7 @@ type ToolbarProps = {
 
 const Toolbar: React.FC<ToolbarProps> = ({
   onAddBox,
+  onRemoveBox,
   colorValue,
   onChangeColor,
   isColorPickerDisabled,
@@ -25,7 +27,7 @@ const Toolbar: React.FC<ToolbarProps> = ({
   return (
     <div className="toolbar">
       <button onClick={onAddBox}>Add Box</button>
-      <button>Remove Box</button>
+      <button onClick={onRemoveBox}>Remove Box</button>
       <input
         aria-label="Box color"
         type="color"

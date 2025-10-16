@@ -1,24 +1,41 @@
 import { applySnapshot, getSnapshot } from "mobx-state-tree";
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { v4 as uuid } from "uuid";
 import App from "../../components/App";
 import store from "../../stores/MainStore";
 import { DEFAULT_POSITION } from "../../application/BoxService";
 import BoxModel from "../../stores/models/Box";
+import { DragEvent, DragServiceProvider } from "../../services/drag";
+import { createMockDragService } from "../testUtils/createMockDragService";
 
 const BASE_SNAPSHOT = getSnapshot(store);
 
-afterEach(() => {
-  applySnapshot(store, BASE_SNAPSHOT);
-});
-
-/* eslint-disable testing-library/no-render-in-lifecycle */
-beforeEach(() => {
-  render(<App />);
+const createDragEvent = (overrides: Partial<DragEvent>, element: Element): DragEvent => ({
+  dx: 0,
+  dy: 0,
+  target: element,
+  ...overrides,
 });
 
 describe("App", () => {
+  let dragMock: ReturnType<typeof createMockDragService>;
+
+  /* eslint-disable testing-library/no-render-in-lifecycle */
+  beforeEach(() => {
+    dragMock = createMockDragService();
+    render(
+      <DragServiceProvider service={dragMock.service}>
+        <App />
+      </DragServiceProvider>,
+    );
+  });
+
+  afterEach(() => {
+    dragMock.reset();
+    applySnapshot(store, BASE_SNAPSHOT);
+  });
+
   it("should render add box control when the app mounts then the button is visible", () => {
     expect(screen.getByRole("button", { name: /add box/i })).toBeInTheDocument();
   });
@@ -125,5 +142,60 @@ describe("App", () => {
 
     expect(colorInput.value).toBe(secondBoxColor);
     expect(store.boxes[1].color).toBe(secondBoxColor);
+  });
+
+  it("should persist the new position when the user finishes dragging then the store reflects the latest coordinates", async () => {
+    const boxElement = screen.getAllByRole("button", { name: /^box$/i })[0];
+    const initialLeft = store.boxes[0].left;
+    const initialTop = store.boxes[0].top;
+
+    await waitFor(() => expect(dragMock.hasListeners(boxElement)).toBe(true));
+    act(() => {
+      dragMock.triggerStart(boxElement, createDragEvent({}, boxElement));
+      dragMock.triggerMove(boxElement, createDragEvent({ dx: 12, dy: 8 }, boxElement));
+    });
+    act(() => {
+      dragMock.triggerEnd(boxElement, createDragEvent({}, boxElement));
+    });
+
+    expect(store.boxes[0].left).toBe(initialLeft + 12);
+    expect(store.boxes[0].top).toBe(initialTop + 8);
+    expect(boxElement).toHaveStyle({ transform: `translate(${initialLeft + 12}px, ${initialTop + 8}px)` });
+  });
+
+  it("should remove the selected box when the user presses remove box then the element disappears", async () => {
+    const user = userEvent.setup();
+    const boxElement = screen.getAllByRole("button", { name: /^box$/i })[0];
+
+    await user.click(boxElement);
+    await user.click(screen.getByRole("button", { name: /remove box/i }));
+
+    expect(screen.queryByRole("button", { name: /^box$/i })).not.toBeInTheDocument();
+    expect(store.boxes).toHaveLength(0);
+  });
+
+  it("should remove all selected boxes when the user presses remove box then the selection summary resets", async () => {
+    const user = userEvent.setup();
+
+    act(() => {
+      store.addBox(
+        BoxModel.create({
+          id: uuid(),
+          color: "#abcdef",
+          left: 80,
+          top: 120,
+        }),
+      );
+    });
+
+    const boxElements = screen.getAllByRole("button", { name: /^box$/i });
+
+    await user.click(boxElements[0]);
+    await user.click(boxElements[1]);
+    await user.click(screen.getByRole("button", { name: /remove box/i }));
+
+    expect(screen.queryAllByRole("button", { name: /^box$/i })).toHaveLength(0);
+    expect(screen.getByText(/no boxes selected/i)).toBeInTheDocument();
+    expect(store.boxes).toHaveLength(0);
   });
 });

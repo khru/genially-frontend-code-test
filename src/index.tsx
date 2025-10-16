@@ -2,6 +2,7 @@ import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./main.css";
 import App from "./components/App";
+import { DragServiceProvider, defaultDragService } from "./services/drag";
 import * as serviceWorker from "./serviceWorker";
 
 const rootElement = document.getElementById("root");
@@ -14,7 +15,9 @@ const root = createRoot(rootElement);
 
 root.render(
   <StrictMode>
-    <App />
+    <DragServiceProvider service={defaultDragService}>
+      <App />
+    </DragServiceProvider>
   </StrictMode>,
 );
 

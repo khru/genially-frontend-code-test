@@ -14,6 +14,10 @@ const BoxModel = types
     setColor(color: string) {
       self.color = color;
     },
+    setPosition(position: { left: number; top: number }) {
+      self.left = position.left;
+      self.top = position.top;
+    },
   }));
 
 export default BoxModel;

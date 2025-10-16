@@ -62,6 +62,28 @@ const MainStore = types
         updateSelectionService(nextSelection);
         updateColorService(nextSelection);
       },
+      removeSelectedBoxes() {
+        if (self.selectedBoxIds.length === 0) {
+          return;
+        }
+
+        const selectedIds = new Set(self.selectedBoxIds);
+        self.boxes.replace(self.boxes.filter((box) => !selectedIds.has(box.id)));
+        self.selectedBoxIds.replace([]);
+
+        updateSelectionService([]);
+        updateColorService([]);
+      },
+      updateBoxPosition(id: string, position: Position) {
+        const target = self.boxes.find((box) => box.id === id);
+        if (!target) {
+          return;
+        }
+
+        target.setPosition(position);
+        updateSelectionService();
+        updateColorService();
+      },
       updateSelectedBoxesColor(color: string) {
         updateColorService();
         const targets = self.colorService.targetsForColor();

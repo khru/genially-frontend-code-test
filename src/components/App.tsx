@@ -9,6 +9,10 @@ const AppView: React.FC = () => {
     store.addBoxAtDefaultPosition();
   }, []);
 
+  const handleRemoveBox = React.useCallback(() => {
+    store.removeSelectedBoxes();
+  }, []);
+
   const handleColorChange = React.useCallback((color: string) => {
     store.updateSelectedBoxesColor(color);
   }, []);
@@ -24,6 +28,7 @@ const AppView: React.FC = () => {
     <div className="app">
       <Toolbar
         onAddBox={handleAddBox}
+        onRemoveBox={handleRemoveBox}
         colorValue={selectedColor}
         onChangeColor={handleColorChange}
         isColorPickerDisabled={!hasSelection}
