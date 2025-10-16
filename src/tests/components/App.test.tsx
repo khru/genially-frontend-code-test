@@ -8,7 +8,7 @@ import { DEFAULT_POSITION } from "../../domain/BoxFactory";
 import BoxModel from "../../stores/models/Box";
 import { DragEvent } from "../../domain/DragPort";
 import { DragAdapterProvider } from "../../ui/DragAdapterProvider";
-import { createMockDragAdapter } from "../testUtils/createMockDragAdapter";
+import { createMockDragAdapter } from "../helpers/createMockDragAdapter";
 
 const BASE_SNAPSHOT = getSnapshot(store);
 
@@ -22,15 +22,14 @@ const createDragEvent = (overrides: Partial<DragEvent>, element: Element): DragE
 describe("App", () => {
   let dragMock: ReturnType<typeof createMockDragAdapter>;
 
-  /* eslint-disable testing-library/no-render-in-lifecycle */
-  beforeEach(() => {
+  const renderApp = () => {
     dragMock = createMockDragAdapter();
     render(
       <DragAdapterProvider service={dragMock.adapter}>
         <App />
       </DragAdapterProvider>,
     );
-  });
+  };
 
   afterEach(() => {
     dragMock.reset();
@@ -40,26 +39,32 @@ describe("App", () => {
   });
 
   it("should render add box control when the app mounts then the button is visible", () => {
+    renderApp();
     expect(screen.getByRole("button", { name: /add box/i })).toBeInTheDocument();
   });
 
   it("should render remove box control when the app mounts then the button is visible", () => {
+    renderApp();
     expect(screen.getByRole("button", { name: /remove box/i })).toBeInTheDocument();
   });
 
   it("should expose a named color picker when the toolbar renders then the input is accessible", () => {
+    renderApp();
     expect(screen.getByLabelText(/box color/i)).toBeInTheDocument();
   });
 
   it("should show selection summary when nothing is selected then the default message is present", () => {
+    renderApp();
     expect(screen.getByText(/no boxes selected/i)).toBeInTheDocument();
   });
 
   it("should list one box when the store is seeded then the canvas shows exactly one entry", () => {
+    renderApp();
     expect(screen.getAllByText(/^box$/i)).toHaveLength(1);
   });
 
   it("should reflect new boxes when the store adds one then the canvas renders the additional box", async () => {
+    renderApp();
     act(() => {
       store.addBox(
         BoxModel.create({
@@ -76,6 +81,7 @@ describe("App", () => {
   });
 
   it("should show a second box when the user clicks add box then the canvas lists the new element", async () => {
+    renderApp();
     const user = userEvent.setup();
 
     await user.click(screen.getByRole("button", { name: /add box/i }));
@@ -88,6 +94,7 @@ describe("App", () => {
   });
 
   it("should decorate the box with selection when the user clicks the box then the selection state is true", async () => {
+    renderApp();
     const user = userEvent.setup();
     const boxElement = screen.getAllByRole("button", { name: /^box$/i })[0];
 
@@ -97,6 +104,7 @@ describe("App", () => {
   });
 
   it("should clear the selection when the user clicks on the canvas then the box loses the selection class", async () => {
+    renderApp();
     const user = userEvent.setup();
     const boxElement = screen.getAllByRole("button", { name: /^box$/i })[0];
     await user.click(boxElement);
@@ -107,6 +115,7 @@ describe("App", () => {
   });
 
   it("should update the selected box color when the user picks a new color then the box reflects the change", async () => {
+    renderApp();
     const user = userEvent.setup();
     const colorInput: HTMLInputElement = screen.getByLabelText(/box color/i);
     const boxElement = screen.getAllByRole("button", { name: /^box$/i })[0];
@@ -122,6 +131,7 @@ describe("App", () => {
   });
 
   it("should update the color control when the user selects another box then the picker mirrors that box color", async () => {
+    renderApp();
     const user = userEvent.setup();
     const colorInput: HTMLInputElement = screen.getByLabelText(/box color/i);
     const secondBoxColor = "#123456";
@@ -148,6 +158,7 @@ describe("App", () => {
   });
 
   it("should persist the new position when the user finishes dragging then the store reflects the latest coordinates", async () => {
+    renderApp();
     const boxElement = screen.getAllByRole("button", { name: /^box$/i })[0];
     const initialLeft = store.boxes[0].left;
     const initialTop = store.boxes[0].top;
@@ -167,6 +178,7 @@ describe("App", () => {
   });
 
   it("should remove the selected box when the user presses remove box then the element disappears", async () => {
+    renderApp();
     const user = userEvent.setup();
     const boxElement = screen.getAllByRole("button", { name: /^box$/i })[0];
 
@@ -178,6 +190,7 @@ describe("App", () => {
   });
 
   it("should remove all selected boxes when the user presses remove box then the selection summary resets", async () => {
+    renderApp();
     const user = userEvent.setup();
 
     act(() => {

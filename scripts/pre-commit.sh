@@ -35,7 +35,7 @@ repo_root() {
 }
 
 run_frontend_checks() {
-  echo "🧪 API changes detected. Running npm lint-staged and test pre-commit checks..."
+  echo "🧪 Frontend changes detected. Running npm lint-staged and test pre-commit checks..."
 
   cd "$(repo_root)" || return 1
   echo "$(which nvm)"

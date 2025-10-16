@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import BoxDraggable, { BoxDraggableProps } from "../../components/BoxDraggable";
 import { DragEvent } from "../../domain/DragPort";
 import { DragAdapterProvider } from "../../ui/DragAdapterProvider";
-import { createMockDragAdapter } from "../testUtils/createMockDragAdapter";
+import { createMockDragAdapter } from "../helpers/createMockDragAdapter";
 
 const createDragEvent = (overrides: Partial<DragEvent>, element: Element): DragEvent => ({
   dx: 0,

@@ -18,14 +18,7 @@ module.exports = {
       version: "detect",
     },
   },
-  plugins: ["@typescript-eslint", "react", "react-hooks", "testing-library"],
-  extends: [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:react/recommended",
-    "plugin:react-hooks/recommended",
-  ],
+  extends: ["react-app", "react-app/jest"],
   rules: {
     semi: ["error", "always"],
     quotes: ["error", "double", { avoidEscape: true }],
@@ -38,12 +31,6 @@ module.exports = {
     "react/prop-types": "off",
     "react/jsx-uses-react": "off",
   },
-  overrides: [
-    {
-      files: ["src/tests/**/*.{ts,tsx}", "**/__tests__/**/*.{ts,tsx}"],
-      extends: ["plugin:testing-library/react"],
-    },
-  ],
   ignorePatterns: [
     "node_modules/",
     "build/",

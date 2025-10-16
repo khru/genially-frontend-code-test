@@ -42,8 +42,10 @@ describe("LocalStorageCanvasStateRepository", () => {
   it("should return undefined when the stored data is invalid", () => {
     window.localStorage.setItem("canvas-state", "not-json");
 
+    const consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
     const repository = createLocalStorageCanvasStateRepository(window.localStorage);
 
     expect(repository.load()).toBeUndefined();
+    consoleErrorSpy.mockRestore();
   });
 });
