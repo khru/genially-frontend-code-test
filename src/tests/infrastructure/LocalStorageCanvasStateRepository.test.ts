@@ -13,29 +13,27 @@ describe("LocalStorageCanvasStateRepository", () => {
 
     repository.save(snapshot);
 
-    const stored = window.localStorage.getItem("canvas-state");
+    const stored = window.localStorage.getItem("canvas-state") ?? "{}";
     expect(stored).not.toBeNull();
-    expect(JSON.parse(stored ?? "{}")).toEqual(snapshot);
+    expect(JSON.parse(stored)).toEqual(snapshot);
   });
 
   it("should hydrate a sanitized snapshot from localStorage", () => {
+    const boxes = [
+      { id: "box-1", width: 200, height: 100, color: "#ffffff", left: 1, top: 2 },
+      { id: "box-2", width: 150, height: 120, color: "#000000", left: 3, top: 4 },
+    ];
     window.localStorage.setItem(
       "canvas-state",
       JSON.stringify({
-        boxes: [
-          { id: "box-1", width: 200, height: 100, color: "#ffffff", left: 1, top: 2 },
-          { id: "box-2", width: 150, height: 120, color: "#000000", left: 3, top: 4 },
-        ],
+        boxes: boxes,
       }),
     );
 
     const repository = createLocalStorageCanvasStateRepository(window.localStorage);
 
     expect(repository.load()).toEqual({
-      boxes: [
-        { id: "box-1", width: 200, height: 100, color: "#ffffff", left: 1, top: 2 },
-        { id: "box-2", width: 150, height: 120, color: "#000000", left: 3, top: 4 },
-      ],
+      boxes: boxes,
     });
   });
 

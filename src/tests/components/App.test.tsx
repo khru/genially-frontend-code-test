@@ -83,12 +83,12 @@ describe("App", () => {
   it("should show a second box when the user clicks add box then the canvas lists the new element", async () => {
     renderApp();
     const user = userEvent.setup();
-
     await user.click(screen.getByRole("button", { name: /add box/i }));
 
     const boxes = await screen.findAllByText(/^box$/i);
-    expect(boxes).toHaveLength(2);
     const latestBox = store.boxes[store.boxes.length - 1];
+
+    expect(boxes).toHaveLength(2);
     expect(latestBox.left).toBe(DEFAULT_POSITION.left);
     expect(latestBox.top).toBe(DEFAULT_POSITION.top);
   });
@@ -119,15 +119,16 @@ describe("App", () => {
     const user = userEvent.setup();
     const colorInput: HTMLInputElement = screen.getByLabelText(/box color/i);
     const boxElement = screen.getAllByRole("button", { name: /^box$/i })[0];
+    const color = "#ff00ff";
 
     await user.click(boxElement);
 
     // Use fireEvent because <input type="color"> lacks full userEvent support.
-    fireEvent.input(colorInput, { target: { value: "#ff00ff" } });
+    fireEvent.input(colorInput, { target: { value: color } });
 
-    expect(colorInput.value).toBe("#ff00ff");
-    expect(boxElement).toHaveStyle({ backgroundColor: "#ff00ff" });
-    expect(store.boxes[0].color).toBe("#ff00ff");
+    expect(colorInput.value).toBe(color);
+    expect(boxElement).toHaveStyle({ backgroundColor: color });
+    expect(store.boxes[0].color).toBe(color);
   });
 
   it("should update the color control when the user selects another box then the picker mirrors that box color", async () => {
@@ -160,21 +161,21 @@ describe("App", () => {
   it("should persist the new position when the user finishes dragging then the store reflects the latest coordinates", async () => {
     renderApp();
     const boxElement = screen.getAllByRole("button", { name: /^box$/i })[0];
-    const initialLeft = store.boxes[0].left;
-    const initialTop = store.boxes[0].top;
+    const axisX = 12;
+    const axisY = 8;
 
     await waitFor(() => expect(dragMock.hasListeners(boxElement)).toBe(true));
     act(() => {
       dragMock.triggerStart(boxElement, createDragEvent({}, boxElement));
-      dragMock.triggerMove(boxElement, createDragEvent({ dx: 12, dy: 8 }, boxElement));
+      dragMock.triggerMove(boxElement, createDragEvent({ dx: axisX, dy: axisY }, boxElement));
     });
     act(() => {
       dragMock.triggerEnd(boxElement, createDragEvent({}, boxElement));
     });
 
-    expect(store.boxes[0].left).toBe(initialLeft + 12);
-    expect(store.boxes[0].top).toBe(initialTop + 8);
-    expect(boxElement).toHaveStyle({ transform: `translate(${initialLeft + 12}px, ${initialTop + 8}px)` });
+    expect(store.boxes[0].left).toBe(axisX);
+    expect(store.boxes[0].top).toBe(axisY);
+    expect(boxElement).toHaveStyle({ transform: `translate(${axisX}px, ${axisY}px)` });
   });
 
   it("should remove the selected box when the user presses remove box then the element disappears", async () => {

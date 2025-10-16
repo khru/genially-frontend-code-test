@@ -6,6 +6,10 @@ describe("BoxColorService", () => {
   let service: BoxColorService;
   const boxes: Box[] = [{ id: "box-1" }, { id: "box-2" }, { id: "box-3" }];
 
+  const firstBox = boxes[0];
+  const secondBox = boxes[1];
+  const thirdBox = boxes[2];
+
   beforeEach(() => {
     service = new BoxColorService();
   });
@@ -14,11 +18,11 @@ describe("BoxColorService", () => {
     service.hydrate(boxes, ["box-3", "box-1"]);
 
     const result = service.targetsForColor();
-    const expectedBoxes = [boxes[2], boxes[0]];
+    const expectedBoxes = [thirdBox, firstBox];
 
     expect(result).toHaveLength(expectedBoxes.length);
     expect(result).toEqual(expect.arrayContaining(expectedBoxes));
-    expect(result).toEqual(expect.not.arrayContaining([boxes[1]]));
+    expect(result).toEqual(expect.not.arrayContaining([secondBox]));
   });
 
   it("should ignore ids that are not present when hydrating then no targets are returned", () => {
@@ -31,7 +35,7 @@ describe("BoxColorService", () => {
     service.hydrate(boxes, ["box-1", "box-1", "box-2"]);
 
     const result = service.targetsForColor();
-    const expectedBoxes = [boxes[0], boxes[1]];
+    const expectedBoxes = [firstBox, secondBox];
 
     expect(result).toHaveLength(expectedBoxes.length);
     expect(result).toEqual(expect.arrayContaining(expectedBoxes));
@@ -42,9 +46,9 @@ describe("BoxColorService", () => {
     service.hydrate(boxes, ["box-3"]);
 
     const result = service.targetsForColor();
-    const expectedBoxes = [boxes[2]];
+    const expectedBoxes = [thirdBox];
 
     expect(result).toEqual(expect.arrayContaining(expectedBoxes));
-    expect(result).toEqual(expect.not.arrayContaining([boxes[0], boxes[1]]));
+    expect(result).toEqual(expect.not.arrayContaining([firstBox, secondBox]));
   });
 });
